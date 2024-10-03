@@ -13,5 +13,5 @@ Proyek ini dibuat untuk memenuhi spesifikasi tugas besar mata kuliah IF2123 Alja
 ## Contributors
 
 - M. Rayhan Farrukh - 13523035
-- Hanif Kalyana Aditya - 13523047
+- Hanif Kalyana Aditya - 13523041
 - Athian Nugraha Muarajuang 13523106
