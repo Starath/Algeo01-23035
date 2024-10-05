@@ -5,6 +5,7 @@ public class Main {
     public static Scanner scan;
     public static void main(String[] args) {
         int isLaunch = 0;
+        int pilihan, pilihanMet;
         clearScreen();
         System.out.println("""
 
@@ -24,9 +25,9 @@ public class Main {
         while (true) { 
             // double[][] M;
             if (isLaunch == 1) clearScreen();
-            border();
             isLaunch = 1;
             System.out.println("MENU");
+            border();
             System.out.println("1. Sistem Persamaan Linier");
             System.out.println("2. Determinan");
             System.out.println("3. Matriks balikan");
@@ -37,8 +38,9 @@ public class Main {
             System.out.println("8. Keluar\n");
 
             scan = new Scanner(System.in);
+            border();
             System.out.print("Pilih menu: ");
-            int pilihan = scan.nextInt();
+            pilihan = scan.nextInt();
 
             while (true) {
                 if (pilihan == 1) {
@@ -51,9 +53,9 @@ public class Main {
                     System.out.println("4. Kaidah Cramer");
                     System.out.println("5. Kembali\n");
                     System.out.print("Pilih menu: ");
-                    pilihan = scan.nextInt();
+                    pilihanMet = scan.nextInt();
 
-                    if (pilihan == 5) {break;}
+                    if (pilihanMet == 1) {break;}
                     // else if(pilihMetode == 2) {}
                     // else if(pilihMetode == 3) {}
                     // else if(pilihMetode == 4) {}
@@ -102,15 +104,34 @@ public class Main {
         }
     }
 
+    // Pilihan Input Matrix
+    public static double[][] inputMatrix(){
+        double[][] M;
+        System.out.println("");
+        border();
+        System.out.println("Menu Input Matriks");
+        return M;
+        
+    }
+    // Pilihan Output Matrix
+
+    // Border untuk styling
     public static void border() {
-        System.out.println("\n+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
+        System.out.println("\n+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
     }
 
+    // Membersihkan terminal
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
+    // Print title - tambahkan ke setiap pilihan yang ada
+    public static void menuTitle(String[] title) {
+        System.out.println(Arrays.toString(title));
+    }
+
+    // Konfirmasi kembali ke menu
     public static void confirmExit() {
         System.out.print("Kembali ke menu ");
         scan = new Scanner(System.in);
