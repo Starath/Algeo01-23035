@@ -111,5 +111,17 @@ public class Matrix {
         }
     }
 
-
+    public static void main(String[] args) {
+        Matrix M = new Matrix(3, 3);
+        M.keyboardInputMatrix();
+        Matrix M2 = M.copyMatrix();
+        M.terminalOutputMatrix();
+        // M.swapRows(0, 1);
+        // M.terminalOutputMatrix();
+        // M.multiplyRow(1, 2);
+        // M.terminalOutputMatrix();
+        M2.terminalOutputMatrix();
+        Matrix M3 = M.transposeMatrix();
+        M3.terminalOutputMatrix();
+    }
 }
