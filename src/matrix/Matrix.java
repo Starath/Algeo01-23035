@@ -1,4 +1,3 @@
-package matrix;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -31,6 +30,27 @@ public class Matrix {
 
     public int rowCount(){return Row;}
     public int colCount(){return Col;}
+    
+    public boolean isSquare() { 
+        return Col == Row;
+    }
+
+    public boolean isIdentity() { 
+        if (!isSquare()) {
+            return false;
+        } else {
+            for (int i = 0; i < Row; i++) {
+                for (int j = 0; j < Col; j++) {
+                    if (i != j) {
+                        return elements[i][j] == 0;
+                    } else {
+                        return elements[i][j] == 1;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /* ============== MODIFY MATRIX =================*/
     public void setElmt(int i, int j, double val) {elements[i][j] = val;}
@@ -64,6 +84,13 @@ public class Matrix {
         }
     }
 
+    public void OBE(int rowOBEIdx, int rowPivotIdx) {
+    //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
+        double tumbal = elements[rowOBEIdx][rowPivotIdx];
+        for (int i = 0; i < Col; i++) {
+            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx];
+        }
+    }
     public void constantMultiply(double scalar){
         int i,j;
         for(i = 0; i < Row; i++){
@@ -103,6 +130,7 @@ public class Matrix {
         System.out.println("Masukkan elemen-elemen matriks");
         for (int i = 0; i < Row; i++){
             for (int j = 0; j < Col; j++){
+                System.out.print("Baris " + (i+1) + " Kolom " + (j+1) + ": ");
                 elements[i][j] = scan.nextDouble();
             }
         }
@@ -144,6 +172,8 @@ public class Matrix {
         // M.terminalOutputMatrix();
         M2.terminalOutputMatrix();
         Matrix M3 = M.transposeMatrix();
+        M3.terminalOutputMatrix();
+        M3.OBE(2, 1);
         M3.terminalOutputMatrix();
     }
 }
