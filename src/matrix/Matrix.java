@@ -85,7 +85,7 @@ public class Matrix {
     //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
         double tumbal = elements[rowOBEIdx][rowPivotIdx];
         for (int i = 0; i < Col; i++) {
-            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal/elements[rowPivotIdx][rowPivotIdx] * elements[rowPivotIdx][i];
+            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx];
         }
     }
     /* ============== ADVANCED MATRIX =================*/
@@ -151,7 +151,7 @@ public class Matrix {
         M2.terminalOutputMatrix();
         Matrix M3 = M.transposeMatrix();
         M3.terminalOutputMatrix();
-        M3.OBE(2, 0);
+        M3.OBE(2, 1);
         M3.terminalOutputMatrix();
     }
 }
