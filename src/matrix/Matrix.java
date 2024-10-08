@@ -29,6 +29,9 @@ public class Matrix {
         return col;
     }
 
+    public int rowCount(){return Row;}
+    public int colCount(){return Col;}
+
     /* ============== MODIFY MATRIX =================*/
     public void setElmt(int i, int j, double val) {elements[i][j] = val;}
     
@@ -61,6 +64,14 @@ public class Matrix {
         }
     }
 
+    public void constantMultiply(double scalar){
+        int i,j;
+        for(i = 0; i < Row; i++){
+            for(j = 0; j < Col; j++){
+                elements[i][j] *= scalar;
+            }
+        }
+    }
     /* ============== ADVANCED MATRIX =================*/
     public Matrix transposeMatrix() {
         Matrix trans = new Matrix(Row,Col);
@@ -71,6 +82,17 @@ public class Matrix {
         }
         return trans;
     }
+
+    public void setIdentityMatrix(){
+        int i, j;
+        for (i = 0; i < Row; i++){
+            for (j = 0; j < Col; j++){
+                if(i == j){elements[i][j] = 1;}
+                else{ elements[i][j] = 0;}
+            }
+        }
+    }
+    
     /* ===========================================*/
     /*                 MATRIX I/O                 */
     /* ===========================================*/
