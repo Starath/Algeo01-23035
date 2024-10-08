@@ -48,7 +48,7 @@ public class Matrix {
         }
         return false;
     }
-    
+
     /* ============== MODIFY MATRIX =================*/
     public void setElmt(int i, int j, double val) {elements[i][j] = val;}
     
@@ -81,6 +81,13 @@ public class Matrix {
         }
     }
 
+    public void OBE(int rowOBEIdx, int rowPivotIdx) {
+    //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
+        double tumbal = elements[rowOBEIdx][rowPivotIdx];
+        for (int i = 0; i < Col; i++) {
+            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal/elements[rowPivotIdx][rowPivotIdx] * elements[rowPivotIdx][i];
+        }
+    }
     /* ============== ADVANCED MATRIX =================*/
     public Matrix transposeMatrix() {
         Matrix trans = new Matrix(Row,Col);
@@ -143,6 +150,8 @@ public class Matrix {
         // M.terminalOutputMatrix();
         M2.terminalOutputMatrix();
         Matrix M3 = M.transposeMatrix();
+        M3.terminalOutputMatrix();
+        M3.OBE(2, 0);
         M3.terminalOutputMatrix();
     }
 }
