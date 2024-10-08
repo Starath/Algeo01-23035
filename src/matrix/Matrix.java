@@ -80,6 +80,7 @@ public class Matrix {
         System.out.println("Masukkan elemen-elemen matriks");
         for (int i = 0; i < Row; i++){
             for (int j = 0; j < Col; j++){
+                System.out.print("Baris " + (i+1) + " Kolom " + (j+1) + ": ");
                 elements[i][j] = scan.nextDouble();
             }
         }
