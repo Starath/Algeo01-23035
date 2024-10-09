@@ -1,5 +1,7 @@
 # TUBES 1 ALGEO K6
 
+[Referensi README](https://github.com/jehna/readme-best-practices/blob/master/README-default.md)
+
 ## About
 
 Proyek ini dibuat untuk memenuhi spesifikasi tugas besar mata kuliah IF2123 Aljabar Linier dan Geometri
