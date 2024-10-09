@@ -41,12 +41,10 @@ public class Matrix {
             return false;
         } else {
             for (int i = 0; i < Row; i++) {
-                for (int j = 0; j < Col; j++) {
                     if (i != j) {
                         return elements[i][j] == 0;
                     } else {
                         return elements[i][j] == 1;
-                    }
                 }
             }
         }
