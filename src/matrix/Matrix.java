@@ -100,6 +100,15 @@ public class Matrix {
             }
         }
     }
+    public void OBEReduksi(int rowCentre) {
+    //OBE untuk seluruh baris
+        for (int i = 0; i < Col; i++) {
+            if (i == rowCentre) {
+                continue;
+            }
+            OBE(i, rowCentre);
+        }
+    }
     /* ============== ADVANCED MATRIX =================*/
     public Matrix transposeMatrix() {
         Matrix trans = new Matrix(Row,Col);
@@ -174,7 +183,9 @@ public class Matrix {
         M2.terminalOutputMatrix();
         Matrix M3 = M.transposeMatrix();
         M3.terminalOutputMatrix();
-        M3.OBE(2, 1);
+        M3.OBEReduksi(0);
+        M3.OBEReduksi(1);
+        M3.OBEReduksi(2);
         M3.terminalOutputMatrix();
     }
 }
