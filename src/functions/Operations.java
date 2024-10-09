@@ -11,14 +11,11 @@ public class Operations {
         double newElm;
         Matrix Mresult = new Matrix(M1.rowCount(),M2.colCount());
         int i, j, k;
-        double[] currRow,currCol;
         for (i = 0; i < M1.rowCount(); i++){
-            currRow = M1.getRow(i);
             for(j = 0; j < M2.colCount(); j++){
                 newElm = 0;
-                currCol = M2.getCol(j);
                 for(k = 0; k < M1.colCount(); k++){
-                    newElm += currRow[k] * currCol[k];
+                    newElm += M1.getElmt(i, k) * M2.getElmt(k,j);
                 }
                 Mresult.setElmt(i, j, newElm);
             }
@@ -27,8 +24,8 @@ public class Operations {
     }
 
     public static void main(String[] args) {
-        Matrix M1 = new Matrix(3,3);
-        Matrix M2 = new Matrix(3,3);
+        Matrix M1 = new Matrix(2,1);
+        Matrix M2 = new Matrix(1,2);
         Matrix M3;
         M1.keyboardInputMatrix();
         M2.keyboardInputMatrix();
