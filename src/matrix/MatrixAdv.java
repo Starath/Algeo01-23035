@@ -1,0 +1,139 @@
+package matrix;
+
+public class MatrixAdv {
+
+    public static Matrix multiplyMatrix(Matrix M1, Matrix M2){
+        double newElm;
+        Matrix Mresult = new Matrix(M1.rowCount(),M2.colCount());
+        int i, j, k;
+        for (i = 0; i < M1.rowCount(); i++){
+            for(j = 0; j < M2.colCount(); j++){
+                newElm = 0;
+                for(k = 0; k < M1.colCount(); k++){
+                    newElm += M1.getElmt(i, k) * M2.getElmt(k,j);
+                }
+                Mresult.setElmt(i, j, newElm);
+            }
+        }
+        return Mresult;
+    }
+    
+    public static Matrix getMinor(Matrix M, int row, int col){
+        Matrix minorMatrix = M.copyMatrix();
+        minorMatrix = minorMatrix.rowCutter(row);
+        minorMatrix = minorMatrix.colCutter(col);
+        return minorMatrix;
+    }
+
+    public static Matrix getCofactorMatrix(Matrix M) {
+        // Create new Matrix (pass by value)
+        int i,j;
+        Matrix cofactorMat = new Matrix(M.rowCount(), M.colCount());
+        for (i = 0; i< M.rowCount(); i++){
+            for (j = 0; j< M.colCount(); j++){
+                cofactorMat.setElmt(i, j, detByGauss(getMinor(M,i, j)) * Math.pow(-1, i+j));
+            }
+        }
+        return cofactorMat;
+    }
+
+    public static Matrix getAdjoinMatrix(Matrix M){
+        // Create new Matrix (pass by value)
+        return getCofactorMatrix(M).transposeMatrix();
+    }
+
+    /* ======================  DETERMINAN  ===================================== */
+    public static double detByGauss (Matrix matrix){
+        Matrix GaussMatrix = matrix.copyMatrix();
+        int i, row, col;
+        double scalar, det;
+        det = 1;
+        for(col = 0; col < GaussMatrix.colCount(); col++){                
+            row = col;
+            while((row < GaussMatrix.rowCount()) && (GaussMatrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
+                row++;
+            }
+
+            if (row < GaussMatrix.rowCount()){ /*Mencari indeks tidak nol pertama */
+                GaussMatrix.swapRows(row, col);
+                if (row != col){
+                    det *= (-1);
+                }
+            }
+            else{
+                return 0; /*kolom nol semua -> indeks out of length -> det = nol*/
+            }
+
+            for(i = 0; i < GaussMatrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
+                scalar = (GaussMatrix.getElmt(i, col) / GaussMatrix.getElmt(col, col)) * (-1);
+                GaussMatrix.addRows(i, col, scalar);
+            }
+
+            det *= GaussMatrix.getElmt(col, col);
+        }
+        return det;
+    }
+
+    public static double detByCofactor(Matrix matrix){
+        double det = 0;
+        double cofactor;
+        int j;
+        /* Rekursi anjay */
+        if (matrix.colCount() == 1){
+            return (matrix.getElmt(0, 0));
+        }
+
+        for(j=0; j<matrix.colCount()-1; j++){
+
+            if((0+j)%2 == 0){
+                cofactor = detByCofactor(getMinor(matrix,0, j));
+            }
+            else{
+                cofactor = (-1)*(detByCofactor(getMinor(matrix,0, j)));
+            }
+            det += (matrix.getElmt(0, j)* cofactor);
+        }
+        return det;
+    }
+
+    /* ======================  INVERSE  ===================================== */
+    // 1. MENGGUNAKAN ADJOIN
+    public static Matrix inverseByAdjoin(Matrix M){
+        double det = detByGauss(M);
+        Matrix invers = getAdjoinMatrix(M);
+        invers.constantMultiply(1/det);
+        return invers;
+    }    
+    
+    // 2. MENGGUNAKAN OBE
+    public static Matrix inverseByOBE(Matrix matrix){
+        Matrix inverseMatrix = new Matrix(matrix.rowCount(),matrix.colCount());
+        Matrix identityMatrix = matrix.copyMatrix();
+        identityMatrix.setIdentityMatrix();
+        int i, row, col;
+        double scalar;
+        for (col = 0; col < matrix.colCount(); col++) {
+            row = col;
+            while((row < matrix.rowCount()) && (matrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
+                row++;
+            }
+
+            if (row < matrix.rowCount()){ /*Mencari indeks tidak nol pertama */
+                matrix.swapRows(row, col);
+                identityMatrix.swapCols(row, col);
+            }
+            else{
+                return inverseMatrix;
+            }
+            for(i = 0; i < matrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
+                if (i != col){
+                    scalar = (matrix.getElmt(i, col) / matrix.getElmt(col, col)) * (-1);
+                    matrix.addRows(i, col, scalar);
+                    identityMatrix.addRows(i, col, scalar);
+
+                }
+            }
+        }            
+        return matrix;
+    } 
+}

@@ -22,12 +22,4 @@ public class PolynomialInterpolation {
         }
         return mHasil;
     }
-
-    public static void main(String[] args) {
-        Matrix M = new Matrix(5,2);
-        M.keyboardInputMatrix();
-        M.terminalOutputMatrix();
-        Matrix mProcessed = PointstoMatrix(M);
-        mProcessed.terminalOutputMatrix();
-    }
 }
