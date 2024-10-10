@@ -1,5 +1,7 @@
 package matrix;
 
+import functions.Determinan;
+
 public class Matrix {
     // Attributes
     double[][] elements;
@@ -94,6 +96,35 @@ public class Matrix {
             }
         }
     }
+    
+    /* ============== ADVANCED MATRIX =================*/
+    public Matrix transposeMatrix() {
+        Matrix trans = new Matrix(Row,Col);
+        for (int i =0; i<Row;i++){
+            for (int j=0; j<Col; j++) {
+                trans.elements[i][j] = elements[j][i];
+            }
+        }
+        return trans;
+    }
+    public void setIdentityMatrix(){
+        int i, j;
+        for (i = 0; i < Row; i++){
+            for (j = 0; j < Col; j++){
+                if(i == j){elements[i][j] = 1;}
+                else{ elements[i][j] = 0;}
+            }
+        }
+    }
+    
+    /* ============== COFACTOR FUNCTIONALITY =================*/
+    public Matrix getMinor(int row, int col){
+        Matrix minorMatrix = copyMatrix();
+        minorMatrix = minorMatrix.colCutter(col);
+        minorMatrix = minorMatrix.rowCutter(row);
+        return minorMatrix;
+    }
+
     public Matrix rowCutter(int idxRow) {
         while(idxRow != (Row)-1){
             swapRows(idxRow+1, idxRow);
@@ -122,46 +153,39 @@ public class Matrix {
         }
         return cutMatrix;
     }
-
-    /* ============== ADVANCED MATRIX =================*/
-    public Matrix transposeMatrix() {
-        Matrix trans = new Matrix(Row,Col);
-        for (int i =0; i<Row;i++){
-            for (int j=0; j<Col; j++) {
-                trans.elements[i][j] = elements[j][i];
-            }
-        }
-        return trans;
-    }
-    public void setIdentityMatrix(){
-        int i, j;
-        for (i = 0; i < Row; i++){
-            for (j = 0; j < Col; j++){
-                if(i == j){elements[i][j] = 1;}
-                else{ elements[i][j] = 0;}
-            }
-        }
-    }
-    public Matrix getMinor(int row, int col){
-        Matrix minorMatrix = copyMatrix();
-        minorMatrix = minorMatrix.rowCutter(row);
-        minorMatrix = minorMatrix.colCutter(col);
-        return minorMatrix;
-    }
     public void OBEReduksi(int rowCentre) {
         //OBE untuk seluruh baris
-            for (int i = 0; i < Col; i++) {
-                if (i == rowCentre) {
-                    continue;
-                }
-                OBE(i, rowCentre);
+        for (int i = 0; i < Col; i++) {
+            if (i == rowCentre) {
+                continue;
             }
+            OBE(i, rowCentre);
+        }
         }
     public void OBE(int rowOBEIdx, int rowPivotIdx) {
-    //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
-        double tumbal = elements[rowOBEIdx][rowPivotIdx];
-        for (int i = 0; i < Col; i++) {
-            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
+        //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
+            double tumbal = elements[rowOBEIdx][rowPivotIdx];
+            for (int i = 0; i < Col; i++) {
+                elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
+            }
         }
+    
+    public static Matrix getCofactorMatrix(Matrix M) {
+        // Create new Matrix (pass by value)
+        int i,j;
+        Matrix cofactorMat = new Matrix(M.rowCount(), M.colCount());
+        for (i = 0; i< M.rowCount(); i++){
+            for (j = 0; j< M.colCount(); j++){
+                cofactorMat.setElmt(i, j, Determinan.detByGauss(M.getMinor(i, j)) * Math.pow(-1, i+j));
+            }
+        }
+        return cofactorMat;
+    }
+
+    public static Matrix getAdjoinMatrix(Matrix M){
+        // Create new Matrix (pass by value)
+        return getCofactorMatrix(M).transposeMatrix();
+    }
+    
     }
 }

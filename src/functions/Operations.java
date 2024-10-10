@@ -23,13 +23,4 @@ public class Operations {
         return Mresult;
     }
 
-    public static void main(String[] args) {
-        Matrix M1 = new Matrix(2,1);
-        Matrix M2 = new Matrix(1,2);
-        Matrix M3;
-        M1.keyboardInputMatrix();
-        M2.keyboardInputMatrix();
-        M3 = multiplyMatrix(M1, M2);
-        M3.terminalOutputMatrix();
-    }
 }
