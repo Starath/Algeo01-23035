@@ -15,7 +15,9 @@ public class Determinan {
 
             if (row < GaussMatrix.rowCount()){ /*Mencari indeks tidak nol pertama */
                 GaussMatrix.swapRows(row, col);
-                det *= (-1);
+                if (row != col){
+                    det *= (-1);
+                }
             }
             else{
                 return 0; /*kolom nol semua -> indeks out of length -> det = nol*/
@@ -27,17 +29,11 @@ public class Determinan {
             }
 
             det *= GaussMatrix.getElmt(col, col);
-            // System.out.print(" Determinan : [");
-            // System.out.print(det);
-            // System.out.print("]\n");
-
-            // terminalOutputMatrix();
         }
         return det;
     }
 
     public double detByCofactor(Matrix matrix){
-        // Matrix CofactorM = copyMatrix();
         double det = 0;
         double cofactor;
         int j;
@@ -49,23 +45,23 @@ public class Determinan {
         for(j=0; j<matrix.colCount()-1; j++){
 
             if((0+j)%2 == 0){
-                // System.out.print(cofactor);
                 cofactor = detByCofactor(matrix.getMinor(0, j));
             }
             else{
                 cofactor = (-1)*(detByCofactor(matrix.getMinor(0, j)));
             }
             det += (matrix.getElmt(0, j)* cofactor);
-            // System.out.print(" Determinan : [");
-            // System.out.print(det);
-            // System.out.print("]\n");
-
-            // terminalOutputMatrix();
         }
         return det;
     }
 
     public static void main(String[] args){
+        Matrix M = new Matrix(3, 3);
+        M.keyboardInputMatrix();
+        Matrix M2 = M.copyMatrix();
+        System.out.print(detByGauss(M2));
+        System.out.print("\n");
+        M.terminalOutputMatrix();
 
     }
 
