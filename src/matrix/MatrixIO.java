@@ -11,7 +11,7 @@ public class MatrixIO {
     /* ===========================================*/
 
     /*=================== INPUT ==================*/
-    public void keyboardInputMatrix(Matrix M){
+    public static void keyboardInputMatrix(Matrix M){
         scan = new Scanner(System.in);
         System.out.println("Masukkan elemen-elemen matriks");
         for (int i = 0; i < M.Row; i++){
@@ -93,7 +93,12 @@ public class MatrixIO {
         }
     }
 
-    public static void fileOutMatrix(Matrix M){
+    // public static void fileOutMatrix(Matrix M){
 
+    // }
+    public static void main(String[] args) {
+        Matrix M;
+        M = fileInputMatrix();
+        terminalOutputMatrix(M);
     }
 }
