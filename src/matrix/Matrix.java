@@ -72,6 +72,14 @@ public class Matrix {
         elements[row1] = tempRow2;
         elements[row2] = tempRow1;
     }
+    public void swapCols(int col1, int col2){
+        double tempCol;
+        for (int i =0; i < Row; i++) {
+            tempCol = elements[i][col2];
+            elements[i][col2] = elements[i][col1];
+            elements[i][col1] = tempCol;
+        }     
+    }
     public void multiplyRow(int row, double scalar){
         for(int j =0; j < Col; j++){
             elements[row][j] *= scalar;
@@ -83,14 +91,6 @@ public class Matrix {
             elements[row1][j] += (elements[row2][j] * scalar);
         }
     }
-
-    public void OBE(int rowOBEIdx, int rowPivotIdx) {
-    //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
-        double tumbal = elements[rowOBEIdx][rowPivotIdx];
-        for (int i = 0; i < Col; i++) {
-            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx];
-        }
-    }
     public void constantMultiply(double scalar){
         int i,j;
         for(i = 0; i < Row; i++){
@@ -99,15 +99,35 @@ public class Matrix {
             }
         }
     }
-    public void OBEReduksi(int rowCentre) {
-    //OBE untuk seluruh baris
-        for (int i = 0; i < Col; i++) {
-            if (i == rowCentre) {
-                continue;
-            }
-            OBE(i, rowCentre);
+    public Matrix rowCutter(Matrix matrix, int idxRow) {
+        while(idxRow != (matrix.Row)-1){
+            swapRows(idxRow+1, idxRow);
+            idxRow++;
         }
+        Matrix cutMatrix = new Matrix(matrix.Row-1,matrix.Col);
+        int i, j;
+        for (i= 0; i < matrix.Row-1; i++) {
+            for (j= 0; j < matrix.Col; j++) {
+                cutMatrix.elements[i][j] = matrix.elements[i][j];
+            }
+        }
+        return cutMatrix;
     }
+    public Matrix colCutter(Matrix matrix, int idxCol) {
+        while(idxCol != (matrix.Col)-1){
+            swapCols(idxCol+1, idxCol);
+            idxCol++;
+        }
+        Matrix cutMatrix = new Matrix(matrix.Row,matrix.Col-1);
+        int i, j;
+        for (i= 0; i < matrix.Row; i++) {
+            for (j= 0; j < matrix.Col-1; j++) {
+                cutMatrix.elements[i][j] = matrix.elements[i][j];
+            }
+        }
+        return cutMatrix;
+    }
+
     /* ============== ADVANCED MATRIX =================*/
     public Matrix transposeMatrix() {
         Matrix trans = new Matrix(Row,Col);
@@ -118,7 +138,6 @@ public class Matrix {
         }
         return trans;
     }
-
     public void setIdentityMatrix(){
         int i, j;
         for (i = 0; i < Row; i++){
@@ -128,7 +147,28 @@ public class Matrix {
             }
         }
     }
-    
+    public Matrix getMinor(Matrix matrix, int row, int col){
+        // Matrix minorMatrix = new Matrix(row-1,col-1);
+        // minorMatrix.colCutter((rowCutter(matrix, row)), col);
+        return colCutter((rowCutter(matrix, row)), col);
+    }
+    public void OBEReduksi(int rowCentre) {
+        //OBE untuk seluruh baris
+            for (int i = 0; i < Col; i++) {
+                if (i == rowCentre) {
+                    continue;
+                }
+                OBE(i, rowCentre);
+            }
+        }
+    public void OBE(int rowOBEIdx, int rowPivotIdx) {
+        //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
+            double tumbal = elements[rowOBEIdx][rowPivotIdx];
+            for (int i = 0; i < Col; i++) {
+                elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx];
+            }
+        }
+        
     /* ===========================================*/
     /*                 MATRIX I/O                 */
     /* ===========================================*/
