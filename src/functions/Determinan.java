@@ -2,7 +2,7 @@ package functions;
 import matrix.*;
 
 public class Determinan {
-    public double detByGauss (Matrix matrix){
+    public static double detByGauss (Matrix matrix){
         Matrix GaussMatrix = matrix.copyMatrix();
         int i, row, col;
         double scalar, det;
@@ -50,10 +50,10 @@ public class Determinan {
 
             if((0+j)%2 == 0){
                 // System.out.print(cofactor);
-                cofactor = detByCofactor(matrix.getMinor(matrix, 0, j));
+                cofactor = detByCofactor(matrix.getMinor(0, j));
             }
             else{
-                cofactor = (-1)*(detByCofactor(matrix.getMinor(matrix, 0, j)));
+                cofactor = (-1)*(detByCofactor(matrix.getMinor(0, j)));
             }
             det += (matrix.getElmt(0, j)* cofactor);
             // System.out.print(" Determinan : [");

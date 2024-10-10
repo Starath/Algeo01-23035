@@ -99,30 +99,30 @@ public class Matrix {
             }
         }
     }
-    public Matrix rowCutter(Matrix matrix, int idxRow) {
-        while(idxRow != (matrix.Row)-1){
+    public Matrix rowCutter(int idxRow) {
+        while(idxRow != (Row)-1){
             swapRows(idxRow+1, idxRow);
             idxRow++;
         }
-        Matrix cutMatrix = new Matrix(matrix.Row-1,matrix.Col);
+        Matrix cutMatrix = new Matrix(Row-1,Col);
         int i, j;
-        for (i= 0; i < matrix.Row-1; i++) {
-            for (j= 0; j < matrix.Col; j++) {
-                cutMatrix.elements[i][j] = matrix.elements[i][j];
+        for (i= 0; i < Row-1; i++) {
+            for (j= 0; j < Col; j++) {
+                cutMatrix.elements[i][j] = elements[i][j];
             }
         }
         return cutMatrix;
     }
-    public Matrix colCutter(Matrix matrix, int idxCol) {
-        while(idxCol != (matrix.Col)-1){
+    public Matrix colCutter(int idxCol) {
+        while(idxCol != (Col)-1){
             swapCols(idxCol+1, idxCol);
             idxCol++;
         }
-        Matrix cutMatrix = new Matrix(matrix.Row,matrix.Col-1);
+        Matrix cutMatrix = new Matrix(Row,Col-1);
         int i, j;
-        for (i= 0; i < matrix.Row; i++) {
-            for (j= 0; j < matrix.Col-1; j++) {
-                cutMatrix.elements[i][j] = matrix.elements[i][j];
+        for (i= 0; i < Row; i++) {
+            for (j= 0; j < Col-1; j++) {
+                cutMatrix.elements[i][j] = elements[i][j];
             }
         }
         return cutMatrix;
@@ -147,10 +147,11 @@ public class Matrix {
             }
         }
     }
-    public Matrix getMinor(Matrix matrix, int row, int col){
-        // Matrix minorMatrix = new Matrix(row-1,col-1);
-        // minorMatrix.colCutter((rowCutter(matrix, row)), col);
-        return colCutter((rowCutter(matrix, row)), col);
+    public Matrix getMinor(int row, int col){
+        Matrix minorMatrix = copyMatrix();
+        minorMatrix.rowCutter(row);
+        minorMatrix.colCutter(row);
+        return minorMatrix;
     }
     public void OBEReduksi(int rowCentre) {
         //OBE untuk seluruh baris
@@ -257,9 +258,9 @@ public class Matrix {
     }
 
     public static void main(String[] args) {
-    //     Matrix M = new Matrix(3, 3);
-    //     M.keyboardInputMatrix();
-    //     Matrix M2 = M.copyMatrix();
+        Matrix M = new Matrix(3, 3);
+        M.keyboardInputMatrix();
+        Matrix M2 = M.copyMatrix();
     //     M.terminalOutputMatrix();
     //     // M.swapRows(0, 1);
     //     // M.terminalOutputMatrix();
@@ -268,13 +269,17 @@ public class Matrix {
     //     M2.terminalOutputMatrix();
     //     Matrix M3 = M.transposeMatrix();
     //     M3.terminalOutputMatrix();
-    //     M3.OBEReduksi(0);
-    //     M3.OBEReduksi(1);
-    //     M3.OBEReduksi(2);
-    //     M3.terminalOutputMatrix();
+        M2.OBEReduksi(1);
+        System.out.print("\n");
+        // M2.OBE(1, 1);
+        // System.out.print("\n");
+        // M2.OBEReduksi(2);
+        // System.out.print("\n");
+        M2.terminalOutputMatrix();
+        System.out.print("\n");
+        M.terminalOutputMatrix();
     
-    Matrix M;
-    M = fileInputMatrix();
-    M.terminalOutputMatrix();
+        // Matrix M;
+        // M = fileInputMatrix();
     }
 }
