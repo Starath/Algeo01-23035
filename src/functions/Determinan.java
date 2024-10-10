@@ -33,7 +33,7 @@ public class Determinan {
         return det;
     }
 
-    public double detByCofactor(Matrix matrix){
+    public static double detByCofactor(Matrix matrix){
         double det = 0;
         double cofactor;
         int j;

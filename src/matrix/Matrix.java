@@ -163,5 +163,27 @@ public class Matrix {
         for (int i = 0; i < Col; i++) {
             elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
         }
+<<<<<<< Updated upstream
     }
+=======
+    
+    public static Matrix getCofactorMatrix(Matrix M) {
+        // Create new Matrix (pass by value)
+        int i,j;
+        Matrix cofactorMat = new Matrix(M.rowCount(), M.colCount());
+        for (i = 0; i< M.rowCount(); i++){
+            for (j = 0; j< M.colCount(); j++){
+                cofactorMat.setElmt(i, j, Determinan.detByGauss(M.getMinor(i, j)) * Math.pow(-1, i+j));
+            }
+        }
+        return cofactorMat;
+    }
+
+    public static Matrix getAdjoinMatrix(Matrix M){
+        // Create new Matrix (pass by value)
+        return getCofactorMatrix(M).transposeMatrix();
+    }
+    
+   
+>>>>>>> Stashed changes
 }
