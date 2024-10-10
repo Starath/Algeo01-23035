@@ -1,14 +1,10 @@
 package functions;
 import matrix.*;
-// import Determinan.*;
-/*      on progress
-        -hanif         */
 
 public class Inverse {
     // 1. MENGGUNAKAN ADJOIN
     public static Matrix inverseByAdjoin(Matrix matrix){
         Matrix adjoinMatrix = matrix.copyMatrix();
-        // Matrix inverseMatrix = new Matrix(matrix.rowCount(),matrix.colCount());
         double det;
         for (int row = 0; row < adjoinMatrix.rowCount(); row++) {
             for (int col = 0; col < adjoinMatrix.colCount(); col++) {
@@ -25,26 +21,40 @@ public class Inverse {
         adjoinMatrix.constantMultiply(1/det); /*adjoinnya */
         return adjoinMatrix;
     }    
-
+    
     // 2. MENGGUNAKAN OBE
-    // kita rehat sejenak
-    public Matrix inverseByOBE(Matrix matrix){
+    public static Matrix inverseByOBE(Matrix matrix){
+        Matrix inverseMatrix = new Matrix(matrix.rowCount(),matrix.colCount());
         Matrix identityMatrix = matrix.copyMatrix();
         identityMatrix.setIdentityMatrix();
-        for (int row = 0; row < matrix.rowCount(); row++) {
-            for (int col = 0; col < matrix.colCount(); col++) {
+        int i, row, col;
+        double scalar;
+        for (col = 0; col < matrix.colCount(); col++) {
+            row = col;
+            while((row < matrix.rowCount()) && (matrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
+                row++;
+            }
+
+            if (row < matrix.rowCount()){ /*Mencari indeks tidak nol pertama */
+                matrix.swapRows(row, col);
+                identityMatrix.swapCols(row, col);
+            }
+            else{
+                return inverseMatrix;
+            }
+            for(i = 0; i < matrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
+                if (i != col){
+                    scalar = (matrix.getElmt(i, col) / matrix.getElmt(col, col)) * (-1);
+                    matrix.addRows(i, col, scalar);
+                    identityMatrix.addRows(i, col, scalar);
+
+                }
             }
         }            
-        return identityMatrix;
+        return matrix;
     } 
     
     public static void main(String[] args){
-        Matrix M = new Matrix(3, 3);
-        M.keyboardInputMatrix();
-        Matrix M2 = M.copyMatrix();
-        (inverseByAdjoin(M2)).terminalOutputMatrix();
-        System.out.print("\n");
-        System.out.print("\n");
-
+        
     }    
 }

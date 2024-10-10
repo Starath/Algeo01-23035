@@ -157,106 +157,11 @@ public class Matrix {
                 OBE(i, rowCentre);
             }
         }
-        public void OBE(int rowOBEIdx, int rowPivotIdx) {
-        //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
-            double tumbal = elements[rowOBEIdx][rowPivotIdx];
-            for (int i = 0; i < Col; i++) {
-                elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
-            }
+    public void OBE(int rowOBEIdx, int rowPivotIdx) {
+    //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
+        double tumbal = elements[rowOBEIdx][rowPivotIdx];
+        for (int i = 0; i < Col; i++) {
+            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
         }
-        
-    
-        /* ===========================================*/
-    /*                 MATRIX I/O                 */
-    /* ===========================================*/
-
-    /*=================== INPUT ==================*/
-    public void keyboardInputMatrix(){
-        scan = new Scanner(System.in);
-        System.out.println("Masukkan elemen-elemen matriks");
-        for (int i = 0; i < Row; i++){
-            for (int j = 0; j < Col; j++){
-                elements[i][j] = scan.nextDouble();
-            }
-        }
-        System.out.println(""); // Biar ada newline (styling)
-    }
-
-    public static Matrix fileInputMatrix(){
-        scan = new Scanner(System.in);
-        System.out.println("Masukkan nama file (contoh: a.txt)");
-        String filename = scan.nextLine();
-        String path = "..\\test\\" + filename;
-        System.out.println("Opening " + path + "...");
-        
-        try {
-            int nRow, nCol;
-            nRow = nCol = 0;
-            File file = new File(path);
-            Scanner scanFile = new Scanner(file);
-            
-            // Taro di luar? biar ngeliat m sekali aja
-            while(scanFile.hasNextLine()){
-                nCol = (scanFile.nextLine().split(" ").length);
-                nRow++;
-            }
-            scanFile.close();
-
-            // Create matrix
-            Matrix M = new Matrix(nRow, nCol);
-            scanFile = new Scanner(file);
-            
-            // Read file and assign each element
-            for (int i = 0; i < nRow; i++){
-                for (int j = 0; j < nCol; j++){
-                    M.setElmt(i, j, scanFile.nextDouble());
-                }
-            }
-
-            scanFile.close();
-            return M;
-            
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found...");
-            Matrix zero = new Matrix(1, 1);
-            zero.setElmt(0, 0, 0);
-            // return 0 nanti di cek di main sebagai boolean value
-            return zero;
-        }
-    }
-    
-    /*=================== OUTPUT ==================*/
-    
-    public void terminalOutputMatrix() {
-        for (int i = 0; i < Row; i++){
-            for (int j = 0; j < Col; j++){
-                System.out.print(elements[i][j] + " ");
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-    }
-    
-    public void fileOutputMatrix(){
-        
-    }
-    public void printRow(int idx) {
-        System.out.println(Arrays.toString(getRow(idx)));
-    }
-    public void printCol(int idx){
-        double col[] = getCol(idx);
-        int i;
-        for (i = 0; i < Row;i++) {
-            System.out.print("[");
-            System.out.print(col[i]);
-            System.out.print("]\n");
-        }
-    }
-    
-    public static void main(String[] args) {
-        Matrix M = new Matrix(3, 3);
-        M.keyboardInputMatrix();
-        
-        
     }
 }

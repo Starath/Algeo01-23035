@@ -23,7 +23,7 @@ public class Determinan {
                 return 0; /*kolom nol semua -> indeks out of length -> det = nol*/
             }
 
-            for(i = col+1; i < GaussMatrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
+            for(i = 0; i < GaussMatrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
                 scalar = (GaussMatrix.getElmt(i, col) / GaussMatrix.getElmt(col, col)) * (-1);
                 GaussMatrix.addRows(i, col, scalar);
             }
@@ -56,12 +56,12 @@ public class Determinan {
     }
 
     public static void main(String[] args){
-        Matrix M = new Matrix(3, 3);
-        M.keyboardInputMatrix();
-        Matrix M2 = M.copyMatrix();
-        System.out.print(detByGauss(M2));
-        System.out.print("\n");
-        M.terminalOutputMatrix();
+        // Matrix M = new Matrix(3, 3);
+        // M.keyboardInputMatrix();
+        // Matrix M2 = M.copyMatrix();
+        // System.out.print(detByGauss(M2));
+        // System.out.print("\n");
+        // M.terminalOutputMatrix();
 
     }
 
