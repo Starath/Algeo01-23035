@@ -165,7 +165,7 @@ public class Matrix {
         //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
             double tumbal = elements[rowOBEIdx][rowPivotIdx];
             for (int i = 0; i < Col; i++) {
-                elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx];
+                elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
             }
         }
         
