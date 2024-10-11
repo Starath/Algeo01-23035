@@ -1,11 +1,27 @@
 package functions;
 
-import matrix.Matrix;
+import matrix.*;
+import java.util.*;
 
 public class PolynomialInterpolation {
-
-    public static void InputPoints() {
-        
+    public static Scanner scan;
+    public static Matrix KeyboardInputPoints() {
+        Matrix mPoints;
+        int nPoints;
+        scan = new Scanner(System.in);
+        System.out.println("Masukkan banyak seluruh titik : ");
+        //MASIH PERLU CEK INPUT
+        nPoints = scan.nextInt();
+        //MASIH PERLU CEK INPUT
+        mPoints = new Matrix(nPoints, 2);
+        for (int i = 0; i < nPoints; i++) {
+            //MASIH PERLU CEK INPUT
+            System.out.printf("Masukkan titik x%d dan y%d : ", i + 1, i + 1);
+            mPoints.setElmt(i, 0, scan.nextDouble());
+            mPoints.setElmt(i, 1, scan.nextDouble());
+            //MASIH PERLU CEK INPUT
+        }
+        return mPoints;
     }
 
     public static Matrix PointstoMatrix(Matrix mPoints) {
@@ -22,12 +38,12 @@ public class PolynomialInterpolation {
         }
         return mHasil;
     }
-
+    
     public static void main(String[] args) {
-        Matrix M = new Matrix(5,2);
-        M.keyboardInputMatrix();
-        M.terminalOutputMatrix();
+        Matrix M;
+        M = KeyboardInputPoints();
+        MatrixIO.terminalOutputMatrix(M);
         Matrix mProcessed = PointstoMatrix(M);
-        mProcessed.terminalOutputMatrix();
+        MatrixIO.terminalOutputMatrix(mProcessed);
     }
 }
