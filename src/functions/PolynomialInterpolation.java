@@ -4,8 +4,23 @@ import matrix.Matrix;
 
 public class PolynomialInterpolation {
 
-    public static void InputPoints() {
-        
+    public static Matrix KeyboardInputPoints() {
+        Matrix mPoints;
+        int nPoints;
+        scan = new Scanner(System.in);
+        System.out.println("Masukkan banyak seluruh titik : ");
+        //MASIH PERLU CEK INPUT
+        nPoints = scan.nextInt();
+        //MASIH PERLU CEK INPUT
+        mPoints = new Matrix(nPoints, 2);
+        for (int i = 0; i < nPoints; i++) {
+            //MASIH PERLU CEK INPUT
+            System.out.printf("Masukkan titik x%d dan y%d : ", i + 1, i + 1);
+            mPoints.setElmt(i, 0, scan.nextDouble());
+            mPoints.setElmt(i, 1, scan.nextDouble());
+            //MASIH PERLU CEK INPUT
+        }
+        return mPoints;
     }
 
     public static Matrix PointstoMatrix(Matrix mPoints) {
