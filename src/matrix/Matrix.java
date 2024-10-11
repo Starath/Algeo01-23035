@@ -145,12 +145,12 @@ public class Matrix {
     
     public void OBEReduksi(int rowCentre) {
         //OBE untuk seluruh baris
-            for (int i = 0; i < Col; i++) {
-                if (i == rowCentre) {
-                    continue;
-                }
-                OBE(i, rowCentre);
+        for (int i = 0; i < Col; i++) {
+            if (i == rowCentre) {
+                continue;
             }
+            OBE(i, rowCentre);
+        }
         }
     public void OBE(int rowOBEIdx, int rowPivotIdx) {
     //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
