@@ -31,7 +31,7 @@ public class MatrixAdv {
         Matrix cofactorMat = new Matrix(M.rowCount(), M.colCount());
         for (i = 0; i< M.rowCount(); i++){
             for (j = 0; j< M.colCount(); j++){
-                cofactorMat.setElmt(i, j, detByGauss(getMinor(M,i, j)) * Math.pow(-1, i+j));
+                cofactorMat.setElmt(i, j, detByGauss(getMinor(M,i, j)) * ((i+j) % 2 == 0 ? 1 : -1));
             }
         }
         return cofactorMat;
@@ -43,33 +43,27 @@ public class MatrixAdv {
     }
 
     /* ======================  DETERMINAN  ===================================== */
-    public static double detByGauss (Matrix matrix){
-        Matrix GaussMatrix = matrix.copyMatrix();
-        int i, row, col;
-        double scalar, det;
-        det = 1;
-        for(col = 0; col < GaussMatrix.colCount(); col++){                
+    public static double detByGauss (Matrix M){
+        Matrix matrix = M.copyMatrix();
+        int  row, col;
+        double det = 1;
+        for(col = 0; col < matrix.colCount(); col++){                
             row = col;
-            while((row < GaussMatrix.rowCount()) && (GaussMatrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
+            while((row < matrix.rowCount()) && (matrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
                 row++;
             }
 
-            if (row < GaussMatrix.rowCount()){ /*Mencari indeks tidak nol pertama */
-                GaussMatrix.swapRows(row, col);
+            if (row < matrix.rowCount()){ /*Mencari indeks tidak nol pertama */
                 if (row != col){
+                    matrix.swapRows(row, col);
                     det *= (-1);
                 }
+                matrix.OBEReduksi(col);/*membuat angka di bawah pivot menjadi nol */
+                det *= matrix.getElmt(col, col);
             }
             else{
                 return 0; /*kolom nol semua -> indeks out of length -> det = nol*/
             }
-
-            for(i = 0; i < GaussMatrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
-                scalar = (GaussMatrix.getElmt(i, col) / GaussMatrix.getElmt(col, col)) * (-1);
-                GaussMatrix.addRows(i, col, scalar);
-            }
-
-            det *= GaussMatrix.getElmt(col, col);
         }
         return det;
     }
@@ -135,5 +129,12 @@ public class MatrixAdv {
             }
         }            
         return matrix;
-    } 
+    }
+    
+    public static void main(String[] args) {
+        Matrix M = new Matrix(3, 3);
+        MatrixIO.keyboardInputMatrix(M);
+        // System.out.println(detByGauss(M));
+        MatrixIO.terminalOutputMatrix(inverseByAdjoin(M));
+    }
 }

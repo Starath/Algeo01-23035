@@ -159,7 +159,4 @@ public class Matrix {
             elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
         }
     }
-    
-    
-   
 }
