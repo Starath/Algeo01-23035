@@ -156,6 +156,15 @@ public class Matrix {
         return elements[checkRow][checkRow] == 0;
     }
 
+    public void searchPivot(int colPivotIdx) {
+        for (int i = 0; i < Row; i++) {
+            if (!isPivotZero(i)) {
+                swapRows(i, colPivotIdx);
+                break;
+            }
+        }
+    }
+
     public void OBE(int rowOBEIdx, int rowPivotIdx) {
     //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
         double tumbal = elements[rowOBEIdx][rowPivotIdx];
