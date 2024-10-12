@@ -145,13 +145,17 @@ public class Matrix {
     
     public void OBEReduksi(int rowCentre) {
         //OBE untuk seluruh baris
-        for (int i = 0; i < Col; i++) {
+        for (int i = 0; i < Row; i++) {
             if (i == rowCentre) {
                 continue;
             }
             OBE(i, rowCentre);
         }
-        }
+    }
+    public boolean isPivotZero(int checkRow) {
+        return elements[checkRow][checkRow] == 0;
+    }
+
     public void OBE(int rowOBEIdx, int rowPivotIdx) {
     //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
         double tumbal = elements[rowOBEIdx][rowPivotIdx];

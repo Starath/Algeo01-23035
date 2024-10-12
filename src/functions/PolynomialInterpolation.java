@@ -1,9 +1,11 @@
 package functions;
 
-import matrix.Matrix;
+import matrix.*;
+import java.util.*;
 
 public class PolynomialInterpolation {
 
+    public static Scanner scan;
     public static Matrix KeyboardInputPoints() {
         Matrix mPoints;
         int nPoints;
