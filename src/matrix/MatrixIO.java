@@ -11,8 +11,15 @@ public class MatrixIO {
     /* ===========================================*/
 
     /*=================== INPUT ==================*/
-    public static void keyboardInputMatrix(Matrix M){
+    public static Matrix keyboardInputMatrix(){
         scan = new Scanner(System.in);
+        int row,col;
+        System.out.print("Masukkan jumlah baris: ");
+        row = scan.nextInt();
+
+        System.out.print("Masukkan jumlah kolom: ");
+        col = scan.nextInt();
+        Matrix M = new Matrix(row, col);
         System.out.println("Masukkan elemen-elemen matriks");
         for (int i = 0; i < M.Row; i++){
             for (int j = 0; j < M.Col; j++){
@@ -20,6 +27,7 @@ public class MatrixIO {
             }
         }
         System.out.println(""); // Biar ada newline (styling)
+        return M;
     }
 
     public static Matrix fileInputMatrix(){

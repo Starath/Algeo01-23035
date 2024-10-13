@@ -131,9 +131,9 @@ public class MatrixAdv {
         return matrix;
     }
     
+    
     public static void main(String[] args) {
-        Matrix M = new Matrix(3, 3);
-        MatrixIO.keyboardInputMatrix(M);
+        Matrix M = MatrixIO.keyboardInputMatrix();
         // System.out.println(detByGauss(M));
         MatrixIO.terminalOutputMatrix(inverseByAdjoin(M));
     }
