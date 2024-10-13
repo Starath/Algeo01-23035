@@ -37,13 +37,24 @@ public class SPL {
         return mProblem;
     }
 
+    public static Matrix inverseElim (Matrix mProblem){
+        Matrix B = mProblem.copyMatrix();
+        for (int i = 0; i < B.colCount()-2; i++) {
+            B.colCutter(i);
+        } 
+        Matrix inverse = MatrixAdv.inverseByOBE(mProblem.colCutter(mProblem.colCount()-1));
+        return MatrixAdv.multiplyMatrix(inverse, B);
+    }
 
     public static void main(String[] args) {
         Matrix M = new Matrix(2, 3);
-        Matrix MHasil = new Matrix(2, 3);
-        MatrixIO.keyboardInputMatrix(M);
+        Matrix MHasil1 = new Matrix(2, 3);
+        Matrix MHasil2 = MHasil1.copyMatrix();
+        MatrixIO.keyboardInputMatrix();
         System.out.println(M.isPivotZero(0));
-        MHasil = GaussJordanElim(M);
-        MatrixIO.terminalOutputMatrix(MHasil);
+        MHasil1 = GaussJordanElim(M);
+        MHasil2 = inverseElim(M);
+        MatrixIO.terminalOutputMatrix(MHasil1);
+        MatrixIO.terminalOutputMatrix(MHasil2);
     }
 } 
