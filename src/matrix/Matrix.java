@@ -18,7 +18,7 @@ public class Matrix {
     public double[] getRow(int idx) {return elements[idx];}
     public double[] getCol(int idx) {
         double[] col = new double[Row];
-        for (int i =0; i < Col; i++) {
+        for (int i =0; i < Row; i++) {
             col[i] = elements[i][idx];
         }
         return col;
