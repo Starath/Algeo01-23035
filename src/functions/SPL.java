@@ -41,7 +41,7 @@ public class SPL {
         return mProblem;
     }
     
-    public static SPL cramerMethod(Matrix M){
+    public static SPL cramerMethodSPL(Matrix M){
         int row = M.rowCount();
         int col = M.colCount();
 

@@ -68,24 +68,12 @@ public class MatrixAdv {
         return det;
     }
 
-    public static double detByCofactor(Matrix matrix){
+    public static double detByCofactor(Matrix M){
         double det = 0;
-        double cofactor;
-        int j;
-        /* Rekursi anjay */
-        if (matrix.colCount() == 1){
-            return (matrix.getElmt(0, 0));
-        }
-
-        for(j=0; j<matrix.colCount()-1; j++){
-
-            if((0+j)%2 == 0){
-                cofactor = detByCofactor(getMinor(matrix,0, j));
-            }
-            else{
-                cofactor = (-1)*(detByCofactor(getMinor(matrix,0, j)));
-            }
-            det += (matrix.getElmt(0, j)* cofactor);
+        int i;
+        Matrix cofactor = getCofactorMatrix(M);
+        for (i = 0; i < M.rowCount(); i++){
+            det += M.getElmt(i, 0) * cofactor.getElmt(i, 0);
         }
         return det;
     }
@@ -135,6 +123,6 @@ public class MatrixAdv {
     public static void main(String[] args) {
         Matrix M = MatrixIO.keyboardInputMatrix();
         // System.out.println(detByGauss(M));
-        MatrixIO.terminalOutputMatrix(inverseByAdjoin(M));
+        MatrixIO.terminalOutputMatrix(inverseByOBE(M));
     }
 }
