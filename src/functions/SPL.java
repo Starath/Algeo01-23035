@@ -68,4 +68,12 @@ public class SPL {
 
         return result;
     }
+    public static Matrix inverseElim (Matrix mProblem){
+        Matrix B = mProblem.copyMatrix();
+        for (int i = 0; i < B.colCount()-2; i++) {
+            B.colCutter(i);
+        } 
+        Matrix inverse = MatrixAdv.inverseByOBE(mProblem.colCutter(mProblem.colCount()-1));
+        return MatrixAdv.multiplyMatrix(inverse, B);
+    }
 } 
