@@ -2,6 +2,10 @@ package functions;
 
 import matrix.*;
 
+/* Setiap method membuat instansi SPL sebagai nilai yang akan di return. 
+   Oleh karena itu, penggunaan di luar Class ini tidak perlua membuat instance baru 
+ */
+
 public class SPL {
     boolean oneSolution;
     boolean noSolution;
@@ -22,7 +26,7 @@ public class SPL {
     public void setOneSolution() {oneSolution = true;}
     public void setNoSolution() {noSolution = true;}
     public void setInfSolution() {infSolution = true;}
-    public void setSolutions(int Idx, int val){solutions[Idx] = val;}
+    public void setSolutions(int Idx, double val){solutions[Idx] = val;}
 
     public static Matrix GaussJordanElim (Matrix mProblem) {
         for (int i = 0; i < mProblem.rowCount(); i++) {
@@ -36,14 +40,32 @@ public class SPL {
         }
         return mProblem;
     }
+    
+    public static SPL cramerMethod(Matrix M){
+        int row = M.rowCount();
+        int col = M.colCount();
 
+        Matrix A = M.colCutter(col - 1);
+        double[] B = M.getCol(col - 1);
+        double detA, detB;
+        detA = MatrixAdv.detByGauss(A); // Determinant of A
 
-    public static void main(String[] args) {
-        Matrix M = new Matrix(2, 3);
-        Matrix MHasil = new Matrix(2, 3);
-        MatrixIO.keyboardInputMatrix(M);
-        System.out.println(M.isPivotZero(0));
-        MHasil = GaussJordanElim(M);
-        MatrixIO.terminalOutputMatrix(MHasil);
+        SPL result = new SPL(col - 1);
+        if (row != col -1 || detA == 0) {
+            System.out.println("Tidak dapat diselesaikan dengan metode Cramer");
+            return result;
+        };
+        result.setOneSolution();
+        int i,j;
+        for (j = 0; j < col-1; j++){
+            Matrix TempMatrix = A.copyMatrix();
+            for (i = 0; i < row; i++){
+                TempMatrix.setElmt(i, j, B[i]);
+            }
+            detB = MatrixAdv.detByGauss(TempMatrix);
+            result.setSolutions(j, detB/detA);
+        }
+
+        return result;
     }
 } 
