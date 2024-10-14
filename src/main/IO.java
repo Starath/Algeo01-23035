@@ -2,7 +2,6 @@ package main;
 
 import java.io.*;
 import java.util.*;
-
 import matrix.*;
 
 public class IO {
@@ -13,19 +12,22 @@ public class IO {
     /* ===========================================*/
 
     /*=================== INPUT ==================*/
-    public static Matrix keyboardInputMatrix(){
+    public static Matrix keyboardInputMatrix(int row, int col){
         scan = new Scanner(System.in);
-        int row,col;
-        System.out.print("Masukkan jumlah baris: ");
-        row = scan.nextInt();
-
-        System.out.print("Masukkan jumlah kolom: ");
-        col = scan.nextInt();
+        if (row == -1 || col == -1){
+            System.out.print("Masukkan jumlah baris: ");
+            row = scan.nextInt();
+    
+            System.out.print("Masukkan jumlah kolom: ");
+            col = scan.nextInt();
+        }
+        
         Matrix M = new Matrix(row, col);
         System.out.println("Masukkan elemen-elemen matriks");
-        for (int i = 0; i < M.Row; i++){
-            for (int j = 0; j < M.Col; j++){
-                M.elements[i][j] = scan.nextDouble();
+        for (int i = 0; i < M.rowCount(); i++){
+            for (int j = 0; j < M.colCount(); j++){
+                double elm = scan.nextDouble();
+                M.setElmt(i, j, elm);
             }
         }
         System.out.println(""); // Biar ada newline (styling)
@@ -78,9 +80,9 @@ public class IO {
     /*=================== OUTPUT ==================*/
 
     public static void terminalOutputMatrix(Matrix M) {
-        for (int i = 0; i < M.Row; i++){
-            for (int j = 0; j < M.Col; j++){
-                System.out.print(M.elements[i][j] + " ");
+        for (int i = 0; i < M.rowCount(); i++){
+            for (int j = 0; j < M.colCount(); j++){
+                System.out.print(M.getElmt(i, j) + " ");
             }
             System.out.println("");
         }
@@ -96,7 +98,7 @@ public class IO {
     public void printCol(Matrix M, int idx){
         double col[] = M.getCol(idx);
         int i;
-        for (i = 0; i < M.Row;i++) {
+        for (i = 0; i < M.rowCount();i++) {
             System.out.print("[");
             System.out.print(col[i]);
             System.out.print("]\n");

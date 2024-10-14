@@ -73,33 +73,57 @@ public class Main {
                     pilihanMet = scan.nextInt();
 
                     if (pilihanMet == 3) {break;}
-                    else if(pilihanMet == 1){
-                        Matrix M = inputMatrix(); // Ntar ganti sama inputMatrix
+                    else if(pilihanMet == 1 || pilihanMet == 2){
+                        Matrix M = inputMatrix(-1,-1); // Ntar ganti sama inputMatrix
                         border();
-                        System.out.print("Determinan Matrix: ");
-                        System.out.println(MatrixAdv.detByGauss(M));
+                        System.out.print("Determinan Matriks: ");
+                        switch (pilihanMet) {
+                            case 1 -> System.out.println(MatrixAdv.detByGauss(M)); // kedua ini nanti ganti
+                            case 2 -> System.out.println(MatrixAdv.detByCofactor(M));
+                        }
                         border();
-                        
+                    }
+                    else {
+                        System.out.println("Input tidak valid!");
                     }
 
                     confirmExit();
-                    break;
                 }
 
                 else if (pilihan == 3) {
                     clearScreen();
                     border();
-                    System.out.println("DETERMINAN MATRIKS");
+                    System.out.println("MATRIKS BALIKAN");
                     System.out.println("1. Metode Reduksi Baris");
-                    System.out.println("2. Metode Ekspansi Kofaktor");
+                    System.out.println("2. Metode Matriks Adjoin");
                     System.out.println("3. Kembali\n");
                     System.out.print("Pilih metode: ");
-                    pilihan = scan.nextInt();
+                    pilihanMet = scan.nextInt();
 
-                    if (pilihan == 3) {break;}
+                    if (pilihanMet == 3) {break;}
+                    else if(pilihanMet == 1 || pilihanMet == 2){
+                        Matrix M = inputMatrix(-1,-1); // Ntar ganti sama inputMatrix
+                        border();
+                        System.out.println("Matriks Balikan: ");
+                        switch (pilihanMet) {
+                            case 1 -> IO.terminalOutputMatrix(MatrixAdv.inverseByOBE(M)); // kedua ini nanti ganti
+                            case 2 -> IO.terminalOutputMatrix(MatrixAdv.inverseByAdjoin(M)); // kedua ini nanti ganti
+                        }
+                        border();
+                    }
+                    else {
+                        System.out.println("Input tidak valid!");
+                    }
+
+                    confirmExit();
                 }
                 else if (pilihan == 4) {}
-                else if (pilihan == 5) {}
+                else if (pilihan == 5) {
+                    Matrix M = inputMatrix(4, 4);
+                    double a = scan.nextDouble();
+                    double b = scan.nextDouble();
+
+                }
                 else if (pilihan == 6) {}
                 else if (pilihan == 7) {}
                 else if (pilihan == 8) {
@@ -133,7 +157,7 @@ public class Main {
     }
 
     // Pilihan Input Matrix
-    public static Matrix inputMatrix(){
+    public static Matrix inputMatrix(int row, int col){
         Matrix M;
         int pilihan;
         Scanner scan = new Scanner(System.in);
@@ -149,10 +173,10 @@ public class Main {
             pilihan = scan.nextInt();
 
             if (pilihan == 1){
-                M = MatrixIO.keyboardInputMatrix();
+                M = IO.keyboardInputMatrix(row,col);
                 break;
             } else if(pilihan == 2){
-                M = MatrixIO.fileInputMatrix();
+                M = IO.fileInputMatrix();
                 break;
             } else {
                 System.out.println("Input tidak valid!\n");
@@ -183,10 +207,10 @@ public class Main {
             pilihan = scan.nextInt();
 
             if (pilihan == 1){
-                MatrixIO.terminalOutputMatrix(M);
+                IO.terminalOutputMatrix(M);
                 break;
             } else if(pilihan == 2){
-                MatrixIO.fileOutputMatrix();
+                IO.fileOutputMatrix();
                 break;
             } else {
                 System.out.println("Input tidak valid!\n");
