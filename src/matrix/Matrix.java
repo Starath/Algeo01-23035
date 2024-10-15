@@ -172,4 +172,15 @@ public class Matrix {
             elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
         }
     }
+
+    public void roundToZero(){
+        int i,j;
+        for(i= 0; i < Row; i++){
+            for(j = 0; j< Col; j++){
+                if (elements[i][j] < 0.0000000001 && elements[i][j] > -0.0000000001 ){
+                    elements[i][j] = 0;
+                }
+            }
+        }
+    }
 }
