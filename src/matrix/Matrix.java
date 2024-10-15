@@ -143,15 +143,25 @@ public class Matrix {
         }
     }
     
-    public void OBEReduksi(int rowCentre) {
-        //OBE untuk seluruh baris
-        for (int i = 0; i < Row; i++) {
-            if (i == rowCentre) {
-                continue;
+    
+    public static boolean isColumnAllZero (Matrix m, int rowIdx, int colIdx) {
+        for (int i = rowIdx; i < m.rowCount(); i++) {
+            if (m.getElmt(i, colIdx) != 0) {
+                return false;
             }
-            OBE(i, rowCentre);
+        }
+        return true;
+    }
+
+    public static void searchNonZeroPivot(Matrix m, int pivotRow, int pivotCol) {
+        for (int k = pivotRow + 1; k < m.rowCount(); k++) {
+            if (m.getElmt(k, pivotCol) != 0) {
+                m.swapRows(pivotRow, k);
+                break;
+            }
         }
     }
+
     public boolean isPivotZero(int checkRow) {
         return elements[checkRow][checkRow] == 0;
     }
@@ -164,12 +174,21 @@ public class Matrix {
             }
         }
     }
-
-    public void OBE(int rowOBEIdx, int rowPivotIdx) {
-    //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
-        double tumbal = elements[rowOBEIdx][rowPivotIdx];
-        for (int i = 0; i < Col; i++) {
-            elements[rowOBEIdx][i] = elements[rowOBEIdx][i] - tumbal * (elements[rowPivotIdx][i] / elements[rowPivotIdx][rowPivotIdx]);
+    
+    public static void OBE(Matrix m, int rowOBEIdx, int pivotRow, int pivotCol) {
+        //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
+        double tumbal = m.getElmt(rowOBEIdx, pivotCol);
+        for (int l = 0; l < m.colCount(); l++) {
+            m.setElmt(rowOBEIdx, l, m.getElmt(rowOBEIdx, l) - tumbal * m.getElmt(pivotRow, l));
+        }
+    }
+    
+    public static void OBEReduksi(Matrix m, int pivotRow, int pivotCol) {
+        //OBE untuk seluruh baris
+        for (int k = 0; k < m.rowCount(); k++) {
+            if (k != pivotRow) {
+                OBE(m, k, pivotRow, pivotCol);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package functions;
 
 import matrix.*;
+import main.IO;
 
 /* Setiap method membuat instansi SPL sebagai nilai yang akan di return. 
    Oleh karena itu, penggunaan di luar Class ini tidak perlua membuat instance baru 
@@ -29,14 +30,28 @@ public class SPL {
     public void setSolutions(int Idx, double val){solutions[Idx] = val;}
 
     public static Matrix GaussJordanElim (Matrix mProblem) {
-        for (int i = 0; i < mProblem.rowCount(); i++) {
-            if (mProblem.isPivotZero(i)) {
-                mProblem.searchPivot(i);
-            }
-            if (mProblem.isPivotZero(i)) { // Kalau masih 0
+        int i = 0, j = 0;
+        double pivot;
+        while (i < mProblem.rowCount() && j < mProblem.colCount() - 1) {
+            if (Matrix.isColumnAllZero(mProblem, i, j)) {
+                // Cek kolom, jika semuanya 0, ganti ke kolom selanjutnya
+                j++;
                 continue;
             }
-            mProblem.OBEReduksi(i);
+            pivot = mProblem.getElmt(i, j); // pivot diambil dari nilai baris i dan kolom j
+            if (pivot == 0) { // Kalo pivot = 0, tukar baris dengan yang tidak nol
+                Matrix.searchNonZeroPivot(mProblem, i, j);
+                pivot = mProblem.getElmt(i, j);
+            }
+            
+            // Normalize isi baris
+            for (int k = 0; k < mProblem.colCount(); k++) {
+                mProblem.setElmt(i, k, mProblem.getElmt(i, k) / pivot);
+            }
+            // Eliminasi
+            Matrix.OBEReduksi(mProblem, i, j);
+            i++;
+            j++;
         }
         return mProblem;
     }
@@ -54,7 +69,7 @@ public class SPL {
         if (row != col -1 || detA == 0) {
             System.out.println("Tidak dapat diselesaikan dengan metode Cramer");
             return result;
-        };
+        }
         result.setOneSolution();
         int i,j;
         for (j = 0; j < col-1; j++){
@@ -75,5 +90,13 @@ public class SPL {
         } 
         Matrix inverse = MatrixAdv.inverseByOBE(mProblem.colCutter(mProblem.colCount()-1));
         return MatrixAdv.multiplyMatrix(inverse, B);
+    }
+    public static void main(String[] args) {
+        Matrix M;
+        M =IO.keyboardInputMatrix(3, 4);
+        IO.terminalOutputMatrix(M);
+        Matrix mHasil;
+        mHasil = GaussJordanElim(M);
+        IO.terminalOutputMatrix(mHasil);
     }
 } 
