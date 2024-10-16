@@ -143,23 +143,20 @@ public class Matrix {
         }
     }
     
-    public void OBEReduksi(int rowCentre) {
+    public void OBEReduksi(int rowPivotIdx) {
         //OBE untuk seluruh baris
-        for (int i = 0; i < Row; i++) {
-            if (i == rowCentre) {
-                continue;
-            }
-            OBE(i, rowCentre);
+        for (int i = rowPivotIdx +1; i < Row; i++) {
+            OBE(i, rowPivotIdx);
         }
     }
-    public boolean isPivotZero(int checkRow) {
-        return elements[checkRow][checkRow] == 0;
+    public boolean isPivotZero(int checkRow, int colPivotIdx) {
+        return elements[checkRow][colPivotIdx] == 0;
     }
 
-    public void searchPivot(int colPivotIdx) {
-        for (int i = 0; i < Row; i++) {
-            if (!isPivotZero(i)) {
-                swapRows(i, colPivotIdx);
+    public void searchPivot(int rowPivotIdx, int colPivotIdx) {
+        for (int i = rowPivotIdx; i < Row; i++) {
+            if (!isPivotZero(i,colPivotIdx)) {
+                swapRows(i, rowPivotIdx);
                 break;
             }
         }
@@ -182,5 +179,23 @@ public class Matrix {
                 }
             }
         }
+    }
+
+    public boolean hasZeroRow(){
+        int i,j;
+        boolean zeroRow;
+        zeroRow = true;
+        for(i=0;i<Row; i++){
+            zeroRow = true;
+            double[] currRow = getRow(i);
+            for(j = 0; j < Col; j++){
+                if(currRow[j] != 0){
+                    zeroRow = false;
+                    break;
+                }
+            }
+            if (zeroRow) return zeroRow; 
+        }
+        return zeroRow;
     }
 }

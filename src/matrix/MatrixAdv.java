@@ -118,5 +118,18 @@ public class MatrixAdv {
         }            
         return matrix;
     }
+
+    public static Matrix getUpperTriangular(Matrix M){
+        Matrix result = M.copyMatrix();
+        for (int pivotRow = 0; pivotRow < M.rowCount(); pivotRow++) {
+            // Ensure the pivot element is non-zero by searching for a valid pivot
+            if (result.isPivotZero(pivotRow, pivotRow)) {
+                result.searchPivot(pivotRow, pivotRow);
+            }
     
+            // Eliminate the elements below the pivot (Gaussian elimination step)
+            result.OBEReduksi(pivotRow); // This will call OBE for all rows except the pivot row
+        }
+        return result;
+    }
 }
