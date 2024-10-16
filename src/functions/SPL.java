@@ -30,30 +30,61 @@ public class SPL {
     public void setSolutions(int Idx, double val){solutions[Idx] = val;}
 
     public static Matrix GaussJordanElim (Matrix mProblem) {
-        int i = 0, j = 0;
+        Matrix mHasil;
+        mHasil = mProblem.copyMatrix();
+        int i = 0, j = 0, k;
         double pivot;
-        while (i < mProblem.rowCount() && j < mProblem.colCount() - 1) {
-            if (Matrix.isColumnAllZero(mProblem, i, j)) {
+        while (i < mHasil.rowCount() && j < mHasil.colCount() - 1) {
+            if (Matrix.isColumnAllZero(mHasil, i, j)) {
                 // Cek kolom, jika semuanya 0, ganti ke kolom selanjutnya
                 j++;
                 continue;
             }
-            pivot = mProblem.getElmt(i, j); // pivot diambil dari nilai baris i dan kolom j
+            pivot = mHasil.getElmt(i, j); // pivot diambil dari nilai baris i dan kolom j
             if (pivot == 0) { // Kalo pivot = 0, tukar baris dengan yang tidak nol
-                Matrix.searchNonZeroPivot(mProblem, i, j);
-                pivot = mProblem.getElmt(i, j);
+                Matrix.searchNonZeroPivot(mHasil, i, j);
+                pivot = mHasil.getElmt(i, j);
             }
             
             // Normalize isi baris
-            for (int k = 0; k < mProblem.colCount(); k++) {
-                mProblem.setElmt(i, k, mProblem.getElmt(i, k) / pivot);
+            for (k = 0; k < mHasil.colCount(); k++) {
+                mHasil.setElmt(i, k, mHasil.getElmt(i, k) / pivot);
             }
             // Eliminasi
-            Matrix.OBEReduksi(mProblem, i, j);
+            Matrix.OBEReduksi(mHasil, i, j);
             i++;
             j++;
         }
-        return mProblem;
+        return mHasil;
+    }
+
+    public static Matrix GaussElim (Matrix mProblem) {
+        int i = 0, j = 0, k;
+        double pivot;
+        Matrix mHasil = mProblem.copyMatrix();
+        while (i < mHasil.rowCount() && j < mHasil.colCount() - 1) {
+            if (Matrix.isColumnAllZero(mHasil, i, j)) {
+                // Cek kolom, jika semuanya 0, ganti ke kolom selanjutnya
+                j++;
+                continue;
+            }
+            pivot = mHasil.getElmt(i, j); // pivot diambil dari nilai baris i dan kolom j
+            if (pivot == 0) { // Kalo pivot = 0, tukar baris dengan yang tidak nol
+                Matrix.searchNonZeroPivot(mHasil, i, j);
+                pivot = mHasil.getElmt(i, j);
+            }
+            // Normalize isi baris
+            for (k = 0; k < mHasil.colCount(); k++) {
+                mHasil.setElmt(i, k, mHasil.getElmt(i, k) / pivot);
+            }
+            // Eliminasi
+            for (k = i + 1; k < mHasil.rowCount(); k++) {
+                Matrix.OBE(mHasil, k, i, j);
+            }
+            i++;
+            j++;
+        }
+        return mHasil;
     }
     
     public static SPL cramerMethodSPL(Matrix M){
@@ -96,7 +127,7 @@ public class SPL {
         M =IO.keyboardInputMatrix(3, 4);
         IO.terminalOutputMatrix(M);
         Matrix mHasil;
-        mHasil = GaussJordanElim(M);
+        mHasil = GaussElim(M);
         IO.terminalOutputMatrix(mHasil);
     }
 } 
