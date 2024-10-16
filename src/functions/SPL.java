@@ -64,12 +64,12 @@ public class SPL {
     public static SPL cramerMethodSPL(Matrix M){
         int row = M.rowCount();
         int col = M.colCount();
-
+        
         Matrix A = M.colCutter(col - 1);
         double[] B = M.getCol(col - 1);
         double detA, detB;
         detA = MatrixAdv.detByGauss(A); // Determinant of A
-
+        
         SPL result = new SPL(col - 1);
         if (row != col -1 || detA == 0) {
             System.out.println("Tidak dapat diselesaikan dengan metode Cramer");
@@ -85,7 +85,7 @@ public class SPL {
             detB = MatrixAdv.detByGauss(TempMatrix);
             result.setSolutions(j, detB/detA);
         }
-
+        
         return result;
     }
     public static Matrix inverseElim (Matrix mProblem){
@@ -93,8 +93,15 @@ public class SPL {
         for (int i = 0; i < B.colCount()-2; i++) {
             B.colCutter(i);
         } 
+        double[mProblem.rowCount()] hasil;
         Matrix inverse = MatrixAdv.inverseByOBE(mProblem.colCutter(mProblem.colCount()-1));
-        return MatrixAdv.multiplyMatrix(inverse, B);
+        hasil = MatrixAdv.multiplyMatrix(inverse, B);
+        int col = M.colCount();
+        SPL result = new SPL(col - 1);
+        int i;
+        for (i = 0; i < mProblem.rowCount(); i++){
+            result.setSolutions(i, hasil[i]);
+        }
     }
 
 } 
