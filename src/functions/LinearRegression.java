@@ -88,7 +88,7 @@ public class LinearRegression {
             }
         }
 
-        SPL hasilSPL = MultipleLinearReg(matrixCuadratic, nPeubah, totalSampel);
+        SPL hasilSPL = MultipleLinearReg(matrixCuadratic, colCuadratic, totalSampel);
         return hasilSPL;
     }
 
