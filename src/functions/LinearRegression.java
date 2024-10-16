@@ -4,46 +4,66 @@
 package functions;
 import matrix.*;
 public class LinearRegression {
-    public static void multipleRegression(Matrix M, Matrix X){
-      /* KAMUS LOKAL */
-        String rumus, m;
-        int i, j, k, l, idxCol;
-        int n = X.Col; // Jumlah peubah x
-        double temp;
-        double taksiran; // index element
-        Matrix mHasil; // Matrix setelah Normal Estimation Equation
-        Matrix mHasilSPL; // Matrix hasil SPL
-    
-        /* ALGORITMA */
-        // Normal Estimation Equation
-        mHasil = new Matrix(n + 1, n + 2);
-        for (i = 0; i < mHasil.Row; i++) {
-            idxCol = i - 1;
-            for (j = 0; j < M.Col; j++) {
-                l = j + 1;
-                temp = 0;
-                for (k = 0; k < M.Row; k++) {
-                    if (i != 0) {
-                        temp += M.getElmt(k, j) * M.getElmt(k, idxCol);
-                    } else {
-                        temp += M.getElmt(k, j);
-                    }
+    public static void MultipleRegression(Matrix matrixData, int nPeubah, int totalSampel){
+    /*asumsi matrix data terdiri dari data2 Xi dan Y. colCount = (nPeubah + 1) */
+    /* KAMUS LOKAL */
+        int i, j;
+        Matrix matrixExtended = MatrixExtender(matrixData);
+        Matrix matrixNEE = new Matrix(nPeubah + 1, nPeubah + 2); 
+        int rowNEE = matrixNEE.rowCount();
+        int colNEE = matrixNEE.colCount();
+        SPL hasil = new SPL(nPeubah); /*Normal Estimation Equation for Multiple Linear Regression */
+        
+        for (i = 0; i < rowNEE; i++) {
+            for (j = 0; j < colNEE; j++) {
+
+                if ((i == 0) && (j == 0)){
+                    matrixNEE.setElmt(i, j, nPeubah);
                 }
-                if (j == 0 && i != 0) {
-                    mHasil.setElmt(i, j, mHasil.getElmt(j, i));
+                if ((i == 0) && (j != 0)){
+                    matrixNEE.setElmt(i, j, sumValue(matrixExtended, 0, j, totalSampel));
                 }
-                if (j == 0 && i == 0) {
-                    mHasil.setElmt(i, j, M.Row);
+                if ((i != 0) && (j == 0)){
+                    matrixNEE.setElmt(i, j, sumValue(matrixExtended, 0, i, totalSampel));
                 }
-                mHasil.setElmt(i, l, temp);
+                else{
+                    matrixNEE.setElmt(i, j, sumValue(matrixExtended, i, j, totalSampel));
+
+                }
             }
         }
-  
-        // SPL pada Matrix hasil Normal Estimation Equation
-        mHasilSPL = SPL.GaussElim(mHasil);
 
-        // rumus polinom Y
+        hasil = SPL.gaussElim(matrixNEE);
     }
     
 
-}    
+    public static int sumValue(Matrix matrixData, int x1, int x2, int totalSampel){
+        int i;
+        double sum = 0;
+        double[] array1 = matrixData.getCol(x1);
+        double[] array2 = matrixData.getCol(x2);
+        for (i = 1; i <= totalSampel; i++) {
+            sum += array1[i] * array2[i];
+        }
+        return sum;
+    }    
+
+    public static Matrix MatrixExtender(Matrix matrix){
+        Matrix matrixExtended = new Matrix(matrix.rowCount(), matrix.colCount() + 1);
+        int i, j;
+        int row = matrixExtended.rowCount();
+        int col = matrixExtended.colCount();
+        for (i = 0; i < row; i++){
+            for (j = 0; j < col ; j++){
+                if(j == 0){
+                    matrixExtended.setElmt(i, j, 1);
+                }                
+                else{
+                    matrixExtended.setElmt(i, j, matrix.getElmt(i, j-1));
+                }
+            }
+        }
+        return matrixExtended;
+    }
+
+}
