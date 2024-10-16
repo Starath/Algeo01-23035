@@ -1,4 +1,5 @@
 package matrix;
+import main.IO;
 
 public class MatrixAdv {
 
@@ -58,7 +59,7 @@ public class MatrixAdv {
                     matrix.swapRows(row, col);
                     det *= (-1);
                 }
-                matrix.OBEReduksi(col);/*membuat angka di bawah pivot menjadi nol */
+                Matrix.OBEReduksi(matrix, row, col);/*membuat angka di bawah pivot menjadi nol */
                 det *= matrix.getElmt(col, col);
             }
             else{
@@ -118,5 +119,11 @@ public class MatrixAdv {
         }            
         return matrix;
     }
-    
+    public static void main(String[] args) {
+        Matrix M = new Matrix(3,3);
+        M = IO.keyboardInputMatrix(M.rowCount(), M.colCount());
+        IO.terminalOutputMatrix(M);
+        System.out.println(detByGauss(M));
+
+    }
 }

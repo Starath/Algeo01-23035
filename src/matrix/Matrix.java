@@ -179,7 +179,7 @@ public class Matrix {
         //Parameter rowOBEIdx yang di-OBE, rowPivotIdx "acuan"-nya
         double tumbal = m.getElmt(rowOBEIdx, pivotCol);
         for (int l = 0; l < m.colCount(); l++) {
-            m.setElmt(rowOBEIdx, l, m.getElmt(rowOBEIdx, l) - tumbal * m.getElmt(pivotRow, l));
+            m.elements[rowOBEIdx][l] = m.getElmt(rowOBEIdx, l) - tumbal * (m.getElmt(pivotRow, l)/m.getElmt(pivotRow, pivotCol));
         }
     }
     
