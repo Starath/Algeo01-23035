@@ -43,6 +43,11 @@ public class SPL {
         int row = M.rowCount(), col = M.colCount();
         SPL result = new SPL(col -1);
 
+        if(row < col -1) result.setInfSolution(); // Kasus SPL lebih dikit dari variabel
+        if(T.colCutter(col-1).hasZeroRow()){
+            if(T.hasZeroRow()) result.setInfSolution();
+            else result.setNoSolution();
+        }
         // Kalo solusi unik
         result.setOneSolution();
         for(int i = 0; i < row; i++){
@@ -62,8 +67,10 @@ public class SPL {
          else result.setNoSolution();
      }
      // Jika tidak ada row zero
+
      // Back Substitution
-     result.setOneSolution();
+     if (!result.noSolution && !result.infSolution()) {result.setOneSolution();}
+     
      for (int i = row - 1; i >= 0; i--) {
          double sum = T.getElmt(i,col-1); // Use Col - 1 to access the augmented column
          
@@ -106,18 +113,27 @@ public class SPL {
         return result;
     }
     public static Matrix inverseElim (Matrix mProblem){
-        Matrix B = mProblem.copyMatrix();
-        for (int i = 0; i < B.colCount()-2; i++) {
-            B.colCutter(i);
-        } 
-        Matrix inverse = MatrixAdv.inverseByOBE(mProblem.colCutter(mProblem.colCount()-1));
-        return MatrixAdv.multiplyMatrix(inverse, B);
+        Matrix A = mProblem.copyMatrix();
+        int row = mProblem.rowCount();
+        int col = mProblem.colCount();
+        double[] tempB = A.getCol(col-1);
+        Matrix B = new Matrix(row,1);
+        // Copy double[] ke Matrix
+        for(int i = 0; i < row; i++){
+            B.setElmt(i, 0, tempB[i]);
+        }
+        IO.terminalOutputMatrix(B);
+        A = A.colCutter(col-1);
+        Matrix inverse = MatrixAdv.inverseByAdjoin(A);
+        IO.terminalOutputMatrix(inverse);
+        Matrix multiplied = MatrixAdv.multiplyMatrix(inverse, B);
+        return multiplied;
     }
 
     public static void main(String[] args) {
         Matrix M = IO.keyboardInputMatrix(3, 4);
         // SPL R = gaussJordanElim(M);
         // R.displaySolutions();
-        IO.terminalOutputMatrix(MatrixAdv.getRREMatrix(M));
+        IO.terminalOutputMatrix(inverseElim(M));
     }
 } 

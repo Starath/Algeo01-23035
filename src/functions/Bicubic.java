@@ -1,6 +1,5 @@
 package functions;
 
-import main.IO;
 import matrix.Matrix;
 import matrix.MatrixAdv;
 
@@ -59,4 +58,5 @@ public class Bicubic {
         }
         return y;
     }
+}
 

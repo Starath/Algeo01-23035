@@ -4,12 +4,11 @@ import main.IO;
 public class MatrixAdv {
 
     public static Matrix multiplyMatrix(Matrix M1, Matrix M2){
-        double newElm;
         Matrix Mresult = new Matrix(M1.rowCount(),M2.colCount());
         int i, j, k;
         for (i = 0; i < M1.rowCount(); i++){
             for(j = 0; j < M2.colCount(); j++){
-                newElm = 0;
+                double newElm = 0;
                 for(k = 0; k < M1.colCount(); k++){
                     newElm += M1.getElmt(i, k) * M2.getElmt(k,j);
                 }

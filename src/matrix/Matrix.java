@@ -198,7 +198,7 @@ public class Matrix {
             }
         }
     }
-
+    // Mengecek apakah matrix ada baris 0
     public boolean hasZeroRow(){
         int i,j;
         boolean zeroRow;
