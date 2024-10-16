@@ -198,4 +198,22 @@ public class Matrix {
             }
         }
     }
+
+    public boolean hasZeroRow(){
+        int i,j;
+        boolean zeroRow;
+        zeroRow = true;
+        for(i=0;i<Row; i++){
+            zeroRow = true;
+            double[] currRow = getRow(i);
+            for(j = 0; j < Col; j++){
+                if(currRow[j] != 0){
+                    zeroRow = false;
+                    break;
+                }
+            }
+            if (zeroRow) return zeroRow; 
+        }
+        return zeroRow;
+    }
 }
