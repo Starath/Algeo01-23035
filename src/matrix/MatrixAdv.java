@@ -151,7 +151,7 @@ public class MatrixAdv {
         return mHasil;
     }
 
-    public static Matrix EselonMatrix(Matrix mProblem){
+    public static Matrix getRREMatrix(Matrix mProblem){
         Matrix mHasil;
         mHasil = mProblem.copyMatrix();
         int i = 0, j = 0, k;
@@ -168,10 +168,7 @@ public class MatrixAdv {
                 pivot = mHasil.getElmt(i, j);
             }
             
-            // Normalize isi baris
-            for (k = 0; k < mHasil.colCount(); k++) {
-                mHasil.setElmt(i, k, mHasil.getElmt(i, k) / pivot);
-            }
+
             // Eliminasi
             Matrix.OBEReduksi(mHasil, i, j);
             i++;
