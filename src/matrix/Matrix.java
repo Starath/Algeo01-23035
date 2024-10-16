@@ -143,7 +143,16 @@ public class Matrix {
         }
     }
     
-    
+    public static boolean zeroCheckerRow(Matrix m, int rowIdx, int manyColumns) {
+    // Untuk nyari baris yang 0 (Dipakai untuk mencari parametrik atau no solusi)
+        for (int i = 0; i < manyColumns; i++) {
+            if (m.getElmt(rowIdx, i) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean isColumnAllZero (Matrix m, int rowIdx, int colIdx) {
         for (int i = rowIdx; i < m.rowCount(); i++) {
             if (m.getElmt(i, colIdx) != 0) {
@@ -157,19 +166,6 @@ public class Matrix {
         for (int k = pivotRow + 1; k < m.rowCount(); k++) {
             if (m.getElmt(k, pivotCol) != 0) {
                 m.swapRows(pivotRow, k);
-                break;
-            }
-        }
-    }
-
-    public boolean isPivotZero(int checkRow) {
-        return elements[checkRow][checkRow] == 0;
-    }
-
-    public void searchPivot(int colPivotIdx) {
-        for (int i = 0; i < Row; i++) {
-            if (!isPivotZero(i)) {
-                swapRows(i, colPivotIdx);
                 break;
             }
         }
@@ -201,5 +197,23 @@ public class Matrix {
                 }
             }
         }
+    }
+
+    public boolean hasZeroRow(){
+        int i,j;
+        boolean zeroRow;
+        zeroRow = true;
+        for(i=0;i<Row; i++){
+            zeroRow = true;
+            double[] currRow = getRow(i);
+            for(j = 0; j < Col; j++){
+                if(currRow[j] != 0){
+                    zeroRow = false;
+                    break;
+                }
+            }
+            if (zeroRow) return zeroRow; 
+        }
+        return zeroRow;
     }
 }

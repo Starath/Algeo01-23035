@@ -126,4 +126,57 @@ public class MatrixAdv {
         System.out.println(detByGauss(M));
 
     }
+    public static Matrix getUpperTriangular(Matrix mProblem) {
+        int i = 0, j = 0, k;
+        double pivot;
+        Matrix mHasil = mProblem.copyMatrix();
+        while (i < mHasil.rowCount() && j < mHasil.colCount() - 1) {
+            if (Matrix.isColumnAllZero(mHasil, i, j)) {
+                // Cek kolom, jika semuanya 0, ganti ke kolom selanjutnya
+                j++;
+                continue;
+            }
+            pivot = mHasil.getElmt(i, j); // pivot diambil dari nilai baris i dan kolom j
+            if (pivot == 0) { // Kalo pivot = 0, tukar baris dengan yang tidak nol
+                Matrix.searchNonZeroPivot(mHasil, i, j);
+                pivot = mHasil.getElmt(i, j);
+            }
+            // Eliminasi
+            for (k = i + 1; k < mHasil.rowCount(); k++) {
+                Matrix.OBE(mHasil, k, i, j);
+            }
+            i++;
+            j++;
+        }
+        return mHasil;
+    }
+
+    public static Matrix EselonMatrix(Matrix mProblem){
+        Matrix mHasil;
+        mHasil = mProblem.copyMatrix();
+        int i = 0, j = 0, k;
+        double pivot;
+        while (i < mHasil.rowCount() && j < mHasil.colCount() - 1) {
+            if (Matrix.isColumnAllZero(mHasil, i, j)) {
+                // Cek kolom, jika semuanya 0, ganti ke kolom selanjutnya
+                j++;
+                continue;
+            }
+            pivot = mHasil.getElmt(i, j); // pivot diambil dari nilai baris i dan kolom j
+            if (pivot == 0) { // Kalo pivot = 0, tukar baris dengan yang tidak nol
+                Matrix.searchNonZeroPivot(mHasil, i, j);
+                pivot = mHasil.getElmt(i, j);
+            }
+            
+            // Normalize isi baris
+            for (k = 0; k < mHasil.colCount(); k++) {
+                mHasil.setElmt(i, k, mHasil.getElmt(i, k) / pivot);
+            }
+            // Eliminasi
+            Matrix.OBEReduksi(mHasil, i, j);
+            i++;
+            j++;
+        }
+        return mHasil;
+    }
 }
