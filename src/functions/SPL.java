@@ -1,7 +1,7 @@
 package functions;
 
-import matrix.*;
 import main.IO;
+import matrix.*;
 
 /* Setiap method membuat instansi SPL sebagai nilai yang akan di return. 
    Oleh karena itu, penggunaan di luar Class ini tidak perlua membuat instance baru 
@@ -12,6 +12,7 @@ public class SPL {
     boolean noSolution;
     boolean infSolution;
     double[] solutions;
+    int variables;
     
     // Contructor
     public SPL(int varCount){
@@ -19,6 +20,7 @@ public class SPL {
         this.noSolution = false;
         this.infSolution = false;
         this.solutions = new double[varCount];
+        this.variables = this.solutions.length; 
     }
 
     public boolean oneSolution(){return oneSolution;}
@@ -28,15 +30,30 @@ public class SPL {
     public void setNoSolution() {noSolution = true;}
     public void setInfSolution() {infSolution = true;}
     public void setSolutions(int Idx, double val){solutions[Idx] = val;}
-
-    public static Matrix GaussJordanElim (Matrix M) {
-
+    public double getSolutions(int Idx){return solutions[Idx];}
+    public int varCount(){return variables;}
+    public void displaySolutions(){
+        for(int i = 0; i < variables; i++){
+            System.out.print("X" + i+1 + solutions[i] + " ");
+        }
     }
 
-     public static SPL gaussianElimination(Matrix M) {
+    public static SPL gaussJordanElim (Matrix M) {
+        Matrix T = MatrixAdv.getRREMatrix(M);
+        int row = M.rowCount(), col = M.colCount();
+        SPL result = new SPL(col -1);
+
+        // Kalo solusi unik
+        result.setOneSolution();
+        for(int i = 0; i < row; i++){
+            result.solutions[i] = T.getElmt(i, col-1);
+        }
+        return result;
+    }
+
+     public static SPL gaussElim(Matrix M) {
      Matrix T = MatrixAdv.getUpperTriangular(M);
-     int row = M.rowCount();
-     int col = M.colCount();
+     int row = M.rowCount(), col = M.colCount();
      SPL result = new SPL(col -1);
 
      if(row < col -1) result.setInfSolution(); // Kasus SPL lebih dikit dari variabel
@@ -97,4 +114,10 @@ public class SPL {
         return MatrixAdv.multiplyMatrix(inverse, B);
     }
 
+    public static void main(String[] args) {
+        Matrix M = IO.keyboardInputMatrix(3, 4);
+        // SPL R = gaussJordanElim(M);
+        // R.displaySolutions();
+        IO.terminalOutputMatrix(MatrixAdv.getRREMatrix(M));
+    }
 } 
