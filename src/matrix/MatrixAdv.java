@@ -126,7 +126,7 @@ public class MatrixAdv {
         System.out.println(detByGauss(M));
 
     }
-    public static Matrix getUpperTriangle() {
+    public static Matrix getUpperTriangle(Matrix mProblem) {
         int i = 0, j = 0, k;
         double pivot;
         Matrix mHasil = mProblem.copyMatrix();
@@ -155,7 +155,7 @@ public class MatrixAdv {
         return mHasil;
     }
 
-    public static Matrix EselonMatrix(){
+    public static Matrix EselonMatrix(Matrix mProblem){
         Matrix mHasil;
         mHasil = mProblem.copyMatrix();
         int i = 0, j = 0, k;
