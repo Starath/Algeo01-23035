@@ -29,13 +29,36 @@ public class SPL {
     public void setInfSolution() {infSolution = true;}
     public void setSolutions(int Idx, double val){solutions[Idx] = val;}
 
-    public static Matrix GaussJordanElim (Matrix mProblem) {
+    public static Matrix GaussJordanElim (Matrix M) {
 
     }
 
-    public static Matrix GaussElim (Matrix mProblem) {
+     public static SPL gaussianElimination(Matrix M) {
+     Matrix T = MatrixAdv.getUpperTriangular(M);
+     int row = M.rowCount();
+     int col = M.colCount();
+     SPL result = new SPL(col -1);
 
-    }
+     if(row < col -1) result.setInfSolution(); // Kasus SPL lebih dikit dari variabel
+     if(T.colCutter(col-1).hasZeroRow()){
+         if(T.hasZeroRow()) result.setInfSolution();
+         else result.setNoSolution();
+     }
+     // Jika tidak ada row zero
+     // Back Substitution
+     result.setOneSolution();
+     for (int i = row - 1; i >= 0; i--) {
+         double sum = T.getElmt(i,col-1); // Use Col - 1 to access the augmented column
+         
+         // Subtract the known terms (elements to the right of the pivot)
+         for (int j = i + 1; j < col-1; j++) {
+             sum -= T.getElmt(i, j) * result.solutions[j];
+         }
+         
+         // Solve for the pivot variable
+         result.solutions[i] = sum / T.getElmt(i, i);
+     }
+     return result;
     
     public static SPL cramerMethodSPL(Matrix M){
         int row = M.rowCount();
@@ -72,12 +95,5 @@ public class SPL {
         Matrix inverse = MatrixAdv.inverseByOBE(mProblem.colCutter(mProblem.colCount()-1));
         return MatrixAdv.multiplyMatrix(inverse, B);
     }
-    public static void main(String[] args) {
-        Matrix M;
-        M =IO.keyboardInputMatrix(3, 4);
-        IO.terminalOutputMatrix(M);
-        Matrix mHasil;
-        mHasil = GaussElim(M);
-        IO.terminalOutputMatrix(mHasil);
-    }
+
 } 
