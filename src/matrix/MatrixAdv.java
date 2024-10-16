@@ -126,7 +126,7 @@ public class MatrixAdv {
         System.out.println(detByGauss(M));
 
     }
-    public static Matrix getUpperTriangle(Matrix mProblem) {
+    public static Matrix getUpperTriangular(Matrix mProblem) {
         int i = 0, j = 0, k;
         double pivot;
         Matrix mHasil = mProblem.copyMatrix();
@@ -140,10 +140,6 @@ public class MatrixAdv {
             if (pivot == 0) { // Kalo pivot = 0, tukar baris dengan yang tidak nol
                 Matrix.searchNonZeroPivot(mHasil, i, j);
                 pivot = mHasil.getElmt(i, j);
-            }
-            // Normalize isi baris
-            for (k = 0; k < mHasil.colCount(); k++) {
-                mHasil.setElmt(i, k, mHasil.getElmt(i, k) / pivot);
             }
             // Eliminasi
             for (k = i + 1; k < mHasil.rowCount(); k++) {

@@ -59,6 +59,7 @@ public class SPL {
          result.solutions[i] = sum / T.getElmt(i, i);
      }
      return result;
+    }
     
     public static SPL cramerMethodSPL(Matrix M){
         int row = M.rowCount();
