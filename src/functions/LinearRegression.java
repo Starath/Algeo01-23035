@@ -36,7 +36,7 @@ public class LinearRegression {
             }
         }
         
-        return (SPL.gaussElim(matrixNEE));
+        return (SPL.inverseElim(matrixNEE));
     }
     
     /* ============== 2. MULTIPLE CUADRATIC REGRESSION =================*/
@@ -100,7 +100,7 @@ public class LinearRegression {
         double sum = 0;
         double[] array1 = matrixData.getCol(x1);
         double[] array2 = matrixData.getCol(x2);
-        for (i = 1; i <= totalSampel; i++) {
+        for (i = 0; i < totalSampel; i++) {
             sum += array1[i] * array2[i];
         }
         return sum;
@@ -137,5 +137,33 @@ public class LinearRegression {
         // Menggunakan rumus C(n, r) = n! / (r! * (n - r)!)
         return factorial(n) / (factorial(r) * factorial(n - r));
     }
-    
+
+    public static void main() {
+        Matrix matrix = new Matrix(10, 4); 
+        SPL hasilSPL = new SPL(3);
+        int i, j;
+        double[][] elements =   {
+        {2, 4, 6, 10},  // {X1, X2, X3, Y}
+        {3, 5, 7, 13},
+        {5, 8, 12, 20},
+        {7, 10, 14, 25},
+        {6, 9, 13, 22},
+        {4, 7, 11, 17},
+        {8, 12, 16, 30},
+        {9, 13, 18, 33},
+        {11, 14, 20, 37},
+        {10, 15, 19, 35}
+        };
+        for (i = 0; i < 10; i++) {
+            for (j = 0; j < 4; j++) {
+                matrix.setElmt(i, j, elements[i][j]);
+            }
+        }
+        hasilSPL = MultipleLinearReg(matrix, 3, 10);
+        hasilSPL.displaySolutions();
+        // SPL R = gaussJordanElim(M);
+        // R.displaySolutions();
+        // IO.terminalOutputMatrix(inverseElim(M));
+    }
+
 }

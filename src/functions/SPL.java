@@ -34,7 +34,7 @@ public class SPL {
     public int varCount(){return variables;}
     public void displaySolutions(){
         for(int i = 0; i < variables; i++){
-            System.out.print("X" + i+1 + solutions[i] + " ");
+            System.out.print("X" + i + "= " + solutions[i] + " ");
         }
     }
 
@@ -112,7 +112,7 @@ public class SPL {
         
         return result;
     }
-    public static Matrix inverseElim (Matrix mProblem){
+    public static SPL inverseElim (Matrix mProblem){
         Matrix A = mProblem.copyMatrix();
         int row = mProblem.rowCount();
         int col = mProblem.colCount();
@@ -122,12 +122,17 @@ public class SPL {
         for(int i = 0; i < row; i++){
             B.setElmt(i, 0, tempB[i]);
         }
-        IO.terminalOutputMatrix(B);
+        // IO.terminalOutputMatrix(B);
         A = A.colCutter(col-1);
         Matrix inverse = MatrixAdv.inverseByAdjoin(A);
-        IO.terminalOutputMatrix(inverse);
+        // IO.terminalOutputMatrix(inverse);
         Matrix multiplied = MatrixAdv.multiplyMatrix(inverse, B);
-        return multiplied;
+        double[] array = multiplied.getCol(0);
+        SPL hasilSPL = new SPL(multiplied.rowCount());
+        for (int i = 0; i < multiplied.rowCount(); i++) {
+            hasilSPL.setSolutions(i, array[i]); 
+        }
+        return hasilSPL;
     }
 
     public static void main(String[] args) {
