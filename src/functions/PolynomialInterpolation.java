@@ -1,6 +1,7 @@
 package functions;
 
 import matrix.*;
+import main.*;
 import java.util.*;
 
 public class PolynomialInterpolation {
@@ -39,4 +40,48 @@ public class PolynomialInterpolation {
         }
         return mHasil;
     }
+
+    public static SPL InterpolationFunction(Matrix otwSolved) {
+        SPL solusi = new SPL(otwSolved.rowCount() - 1);
+        solusi = SPL.gaussJordanElim(otwSolved);
+        return solusi;
+    }
+
+    public static void OutputInterpolation(SPL solusi) {
+        int lenSolusi = solusi.variables;
+        System.out.printf("P(X) = ");
+        for (int index = lenSolusi - 1; index >= 0; index--) {
+            if (index == 0) {
+                System.out.print("(" + solusi.solutions[index] + ")");
+                break;
+            }
+            if (index == 1) {
+                System.out.print("(" + solusi.solutions[index] + ")" + "x + ");
+                continue;
+            }
+            System.out.print("(" + solusi.solutions[index] + ")" + "x^" + index + " + ");
+        }
+    }
+
+    public static double InterpolationFX(SPL solusi, double Absis) {
+        double Ordinat = 0;
+        for (int index = 0; index < solusi.variables; index++) {
+            Ordinat += solusi.solutions[index] * Math.pow(Absis,index);
+        }
+        return Ordinat;
+    }
+
+    public static void main(String[] args) {
+        Matrix mPoints;
+        mPoints = KeyboardInputPoints();
+        Matrix otwSolved = PointstoMatrix(mPoints);
+        IO.terminalOutputMatrix(otwSolved);
+        otwSolved = MatrixAdv.getRREMatrix(otwSolved);
+        IO.terminalOutputMatrix(otwSolved);
+        SPL solusi = InterpolationFunction(otwSolved);
+        OutputInterpolation(solusi);
+        System.out.println(InterpolationFX(solusi, 3));
+
+    }
+
 }
