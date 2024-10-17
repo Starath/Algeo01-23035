@@ -166,8 +166,12 @@ public class MatrixAdv {
                 Matrix.searchNonZeroPivot(mHasil, i, j);
                 pivot = mHasil.getElmt(i, j);
             }
-            
 
+            //Normalize (divide semua elemen di baris i dengan pivot)
+            for (k = j; k < mHasil.colCount(); k++) {
+                mHasil.setElmt(i, k, mHasil.getElmt(i, k) / pivot);
+            }
+            
             // Eliminasi
             Matrix.OBEReduksi(mHasil, i, j);
             i++;
