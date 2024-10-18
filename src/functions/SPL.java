@@ -1,6 +1,5 @@
 package functions;
 
-import java.util.Arrays;
 import main.IO;
 import matrix.*;
 
@@ -41,6 +40,7 @@ public class SPL {
     public void setSolutions(int Idx, double val){solutions[Idx] = val;}
     public void setParamSolutions(int Idx, String val){paramSolutions[Idx] = val;}
     public double getSolutions(int Idx){return solutions[Idx];}
+    public String getParamSolutions(int Idx){return paramSolutions[Idx];}
     public int varCount(){return variables;}
     public void displaySolutions(){
         for(int i = 0; i < variables; i++){
@@ -155,69 +155,74 @@ public class SPL {
         int row = M.rowCount(), col = M.colCount() - 1;
         int i, j, k;
         boolean[] isFreeVariable = new boolean[col];
+        double[] constantsHolder = new double[col];
         int paramCount = 1;
         SPL result = new SPL(col);
 
-        // Initialize paramSolutions
+        // Initialize paramSolutions and isFreeVariable;
         for (i = 0; i < col; i++) {
             result.setParamSolutions(i, "");
+            isFreeVariable[i] = true;
         }
 
          // Find all the free variables
-         for (j = 0; j < col; j++){
-             boolean isPivot = false;
-             for( i = 0; i< row; i++){
+        for(i = 0 ; i < row; i++){
+             for( j = 0; j< col; j++){
                 if(M.getElmt(i, j) == 1 ){
-                    isPivot = true;
-                    break;}
-                
+                    isFreeVariable[j] = false;
+                    constantsHolder[j] = M.getElmt(i, col);
+                    break;
+                }
             }
-            isFreeVariable[j] = !isPivot;
+        }
+        for (j = 0; j < col; j++){
+            
             if (isFreeVariable[j]) {
                 // Initialize the free variable with a parameter like t1, t2, etc.
                 result.setParamSolutions(j, "t" + paramCount);
                 paramCount++; // Increment paramCount here for free variables
             }
          }
-
+         int nonFreeCount = 0;
+         for(j = 0; j < col; j++){
+            if(!isFreeVariable[j]) nonFreeCount++;
+         }
+         int[] indexHolder = new int[nonFreeCount];
+         int indexHolderIdx = 0;
+         for(j = 0; j < col; j++){
+            if(!isFreeVariable[j]) {
+                indexHolder[indexHolderIdx] = j;
+                indexHolderIdx++;}
+         }
          // Construct Parametric Form
-
-         for (i = 0; i < row; i++) {
-            boolean isRowEmpty = true;
-            for(j = 0; j < col; j++){
-                if(M.getElmt(i, j) != 0){
-                    isRowEmpty = false;
-                    break;
-                }
-            }
-
-            
-                // Dependent variable
-                double constant = M.getElmt(i, col); // The constant term
-
-                String currSolution = "" + ((constant) == 0 ? "" : constant);
+         indexHolderIdx = 0;
+         for (i = 0; i < row && indexHolderIdx < nonFreeCount; i++){
+                int nonFreeIdx = indexHolder[indexHolderIdx]; // Get the current non-free variable index
+                if (M.getElmt(i, nonFreeIdx) == 1) { // Ensure the current row corresponds to this non-free variable
+                    double constant = constantsHolder[nonFreeIdx]; // The constant term for this non-free variable
+                    String currSolution = (constant == 0) ? "" : "" + constant;
                 
                 // For each free variable, print its coefficient with parameter
-                // for (k = 0; k < col; k++) {
-                //     if (isFreeVariable[k]) {
-                //         double coeff = -M.getElmt(i, k);
-                //         String sign = "+";
-                //         if (coeff < 0) {
-                //             coeff = -coeff;
-                //             sign = "-";
-                //         }
-                //         if (coeff != 0){
-                //             if(!currSolution.isEmpty()) {currSolution += " " + sign + " ";}
-                //             if (coeff == 1){currSolution += result.paramSolutions[k];}
-                //             else currSolution += coeff + result.paramSolutions[k];
-                //         }
+                for (k = 0; k < col; k++) {
+                    if (isFreeVariable[k]) {
+                        double coeff = -M.getElmt(i, k);
+                        String sign = "+";
+                        if (coeff < 0) {
+                            coeff = -coeff;
+                            sign = "-";
+                        }
+                        if (coeff != 0){
+                            if(!currSolution.isEmpty()) {currSolution += " " + sign + " ";}
+                            if (coeff == 1){currSolution += result.paramSolutions[k];}
+                            else currSolution += coeff + result.paramSolutions[k];
+                        }
                         
-                //     }
-                // }
-                result.setParamSolutions(i, currSolution);
-            
+                    }
+                }
+                result.setParamSolutions(nonFreeIdx, currSolution);
+                indexHolderIdx++;
+                }
         }
-        System.out.println(Arrays.toString(isFreeVariable));
         return result;
     }
     public static void main(String[] args) {
@@ -227,6 +232,5 @@ public class SPL {
         SPL R = parametricWriter(M);
         R.setInfSolution();
         R.displaySolutions();
-        System.out.println(R.getSolutions(3));
     }
 } 
