@@ -44,13 +44,9 @@ public class SPL {
     public int varCount(){return variables;}
     public void displaySolutions(){
         for(int i = 0; i < variables; i++){
-<<<<<<< Updated upstream
-            System.out.print("X" + i + "= " + solutions[i] + " ");
-=======
             if(oneSolution){System.out.print("X" + (i+1) + " = " + solutions[i] + " ");}
             else if(infSolution){System.out.print("X" + (i+1) + " = " + paramSolutions[i] + " ");}
             System.out.println("");
->>>>>>> Stashed changes
         }
     }
 
@@ -128,12 +124,8 @@ public class SPL {
         
         return result;
     }
-<<<<<<< Updated upstream
-    public static SPL inverseElim (Matrix mProblem){
-=======
     public static SPL inverseSPL (Matrix mProblem){
         // Asumsikan matriks invertible (dicek di main)
->>>>>>> Stashed changes
         Matrix A = mProblem.copyMatrix();
         int row = mProblem.rowCount();
         int col = mProblem.colCount();
@@ -148,14 +140,6 @@ public class SPL {
         Matrix inverse = MatrixAdv.inverseByAdjoin(A);
         // IO.terminalOutputMatrix(inverse);
         Matrix multiplied = MatrixAdv.multiplyMatrix(inverse, B);
-<<<<<<< Updated upstream
-        double[] array = multiplied.getCol(0);
-        SPL hasilSPL = new SPL(multiplied.rowCount());
-        for (int i = 0; i < multiplied.rowCount(); i++) {
-            hasilSPL.setSolutions(i, array[i]); 
-        }
-        return hasilSPL;
-=======
         
         // Assign value hasil ke result SPL
         SPL result = new SPL(col-1);
@@ -164,7 +148,6 @@ public class SPL {
             result.setSolutions(i, multiplied.getElmt(i, 0));
         }
         return result;
->>>>>>> Stashed changes
     }
 
     // Dipakai pada RREF Form
@@ -198,6 +181,7 @@ public class SPL {
          }
 
          // Construct Parametric Form
+
          for (i = 0; i < row; i++) {
             boolean isRowEmpty = true;
             for(j = 0; j < col; j++){
@@ -206,27 +190,31 @@ public class SPL {
                     break;
                 }
             }
-            if(!isRowEmpty){
+
+            
                 // Dependent variable
                 double constant = M.getElmt(i, col); // The constant term
 
-                String currSolution = "" + constant;
+                String currSolution = "" + ((constant) == 0 ? "" : constant);
                 
                 // For each free variable, print its coefficient with parameter
-                for (k = 0; k < col; k++) {
-                    if (isFreeVariable[k]) {
-                        double coeff = -M.getElmt(i, k);
-                        String sign = "+";
-                        if (coeff < 0) {
-                            coeff = -coeff;
-                            sign = "-";
-                        }
-                        if (coeff == 1){currSolution += " " + sign + " " + result.paramSolutions[k];}
-                        else currSolution += " " + sign + " " +  coeff + result.paramSolutions[k];
-                    }
-                }
+                // for (k = 0; k < col; k++) {
+                //     if (isFreeVariable[k]) {
+                //         double coeff = -M.getElmt(i, k);
+                //         String sign = "+";
+                //         if (coeff < 0) {
+                //             coeff = -coeff;
+                //             sign = "-";
+                //         }
+                //         if (coeff != 0){
+                //             if(!currSolution.isEmpty()) {currSolution += " " + sign + " ";}
+                //             if (coeff == 1){currSolution += result.paramSolutions[k];}
+                //             else currSolution += coeff + result.paramSolutions[k];
+                //         }
+                        
+                //     }
+                // }
                 result.setParamSolutions(i, currSolution);
-            }
             
         }
         System.out.println(Arrays.toString(isFreeVariable));
@@ -239,5 +227,6 @@ public class SPL {
         SPL R = parametricWriter(M);
         R.setInfSolution();
         R.displaySolutions();
+        System.out.println(R.getSolutions(3));
     }
 } 
