@@ -2,6 +2,7 @@
 
 // import matrix.*;
 package functions;
+import java.util.*;
 import matrix.*;
 
 public class LinearRegression {
@@ -36,7 +37,8 @@ public class LinearRegression {
             }
         }
         
-        return (SPL.inverseElim(matrixNEE));
+        return (SPL.gaussElim(matrixNEE));
+        // return (matrixNEE);
     }
     
     /* ============== 2. MULTIPLE CUADRATIC REGRESSION =================*/
@@ -50,45 +52,38 @@ public class LinearRegression {
         
         /*Membuat matriks kuadratik dulu dari raw data */
         for (i = 0; i < totalSampel; i++) {
-
-            for (j = 0; j < colCuadratic; j++) {
-                /*variabel linear */
-                index = nPeubah;
-                if (j < nPeubah) {
-                    matrixCuadratic.setElmt(i, j, matrixData.getElmt(i, j));
-                }
-                
-                /*variabel kuadratik */
-                index += nPeubah;
-                if (j < index) {
-                    for (k = 0; k < nPeubah; k++) {
-                        matrixCuadratic.setElmt(i, j, Math.pow((matrixData.getElmt(i, k)), nPeubah));
-                    }
-                }
-                
-                /*variabel interaksi */
-                index += combination(nPeubah, 2);
-                if (j < index) {
-                    for (k = 0; k < nPeubah; k++) {
-                        for (l = k + 1; l < nPeubah; l++) {
-                            value = matrixData.getElmt(i, k) * matrixData.getElmt(i, l);
-                            matrixCuadratic.setElmt(i, j, value);
-                        }
-                    }                    
-                }
-                
-                /*variabel Y */
-                int colOfY = matrixData.colCount() - 1;
-                matrixCuadratic.setElmt(i, j, matrixData.getElmt(i, colOfY));
-                index += 1;
-                if (j < index) {
-                    for (k = 0; k < nPeubah; k++) {
-                    }
-                }
+            /*variabel linear */
+            for (j = 0; j < nPeubah; j++) {
+                matrixCuadratic.setElmt(i, j, matrixData.getElmt(i, j));
             }
+            index = nPeubah;
+            
+            /*variabel kuadratik */
+            k = 0;
+            for (j = index; j < index + nPeubah; j++) {
+                matrixCuadratic.setElmt(i, j,  Math.pow((matrixData.getElmt(i, k)), nPeubah));
+                k++;
+            }
+            index += nPeubah;
+
+            /*variabel interaksi */
+            for (j = index; j < index + combination(nPeubah, 2); j++) {
+                for (k = 0; k < nPeubah; k++) {
+                    for (l = k + 1; l < nPeubah; l++) {
+                        value = matrixData.getElmt(i, k) * matrixData.getElmt(i, l);
+                        matrixCuadratic.setElmt(i, j, value);
+                        j++;
+                    }
+                }                    
+            }
+            index += combination(nPeubah, 2);
+            
+            /*variabel Y */
+            int indexOfY = matrixData.colCount() - 1;
+            matrixCuadratic.setElmt(i, index, matrixData.getElmt(i, indexOfY));
         }
 
-        SPL hasilSPL = MultipleLinearReg(matrixCuadratic, colCuadratic, totalSampel);
+        SPL hasilSPL = MultipleLinearReg(matrixCuadratic, colCuadratic-1, totalSampel);
         return hasilSPL;
     }
 
@@ -107,6 +102,7 @@ public class LinearRegression {
     }    
     
     public static Matrix MatrixExtender(Matrix matrix){
+        /*menambah kolom berisikan angka satu di sebelah kiri matrix */
         Matrix matrixExtended = new Matrix(matrix.rowCount(), matrix.colCount() + 1);
         int i, j;
         int row = matrixExtended.rowCount();
@@ -138,32 +134,61 @@ public class LinearRegression {
         return factorial(n) / (factorial(r) * factorial(n - r));
     }
 
+    public static Scanner scan;
+
+    public static double inputValueReg(SPL spl){    
+        scan = new Scanner(System.in);
+        double inputX, result = 0;
+
+        // Meminta pengguna untuk mengisi nilai-nilai array
+        System.out.println("Masukkan nilai-nilai X:");
+        for (int i = 1; i < spl.varCount(); i++) {
+            System.out.print("Nilai X" + (i) + " : ");
+            inputX = scan.nextDouble();  
+            result += inputX * spl.getSolutions(i);
+        }
+        return result;
+    }
+
+    public static void displaySPL(SPL spl){
+        System.out.print("Y" + " = ");
+        for(int i = 0; i < spl.varCount(); i++){
+            System.out.print(spl.getSolutions(i) + "X" + (i+1));
+        }
+    }
+
+
     public static void main() {
-        Matrix matrix = new Matrix(10, 4); 
-        SPL hasilSPL = new SPL(3);
+        Matrix matrix = new Matrix(20, 4); 
+        SPL splByLinearReg = new SPL(3);
+        SPL splByCuadraticReg = new SPL(9);
         int i, j;
+        double inputX = 0;
         double[][] elements =   {
-        {2, 4, 6, 10},  // {X1, X2, X3, Y}
-        {3, 5, 7, 13},
-        {5, 8, 12, 20},
-        {7, 10, 14, 25},
-        {6, 9, 13, 22},
-        {4, 7, 11, 17},
-        {8, 12, 16, 30},
-        {9, 13, 18, 33},
-        {11, 14, 20, 37},
-        {10, 15, 19, 35}
+            {72.4, 76.3, 29.18, 0.90}, {41.6, 70.3, 29.35, 0.91}, {34.3, 77.1, 29.24, 0.96}, {35.1, 68.0, 29.27, 0.89},
+            {10.7, 79.0, 29.78, 1.00}, {12.9, 79.7, 29.80, 1.10}, {8.3, 66.8, 29.69, 1.15}, {20.1, 76.9, 29.82, 1.03},
+            {72.2, 77.7, 29.09, 0.77}, {24.0, 67.7, 29.60, 1.07}, {23.2, 76.8, 29.38, 1.07}, {47.4, 86.6, 29.35, 0.94},
+            {31.5, 79.6, 29.63, 1.10}, {10.6, 68.7, 29.43, 1.10}, {11.2, 80.6, 29.48, 1.10}, {73.3, 73.6, 29.38, 0.91},
+            {75.4, 74.9, 29.28, 0.87}, {75.0, 78.7, 29.09, 0.88}, {107.4, 86.8, 29.03, 0.82}, {54.9, 70.9, 29.37, 0.95}
         };
-        for (i = 0; i < 10; i++) {
+
+        for (i = 0; i < 20; i++) {
             for (j = 0; j < 4; j++) {
                 matrix.setElmt(i, j, elements[i][j]);
             }
         }
-        hasilSPL = MultipleLinearReg(matrix, 3, 10);
-        hasilSPL.displaySolutions();
-        // SPL R = gaussJordanElim(M);
-        // R.displaySolutions();
-        // IO.terminalOutputMatrix(inverseElim(M));
+        splByLinearReg = MultipleLinearReg(matrix, 3, 10);
+        splByCuadraticReg = MultipleCuadraticReg(matrix, 3, 10);
+        // Matrix mCuadratic = MultipleCuadraticReg(matrix, 3, 20);
+        // Matrix mLinear = MultipleLinearReg(matrix, 3, 20);
+        // IO.terminalOutputMatrix(mCuadratic);
+        // System.out.println("\n");
+        // IO.terminalOutputMatrix(mLinear);
+        splByLinearReg.displaySolutions();
+        System.out.println("\n");
+        splByCuadraticReg.displaySolutions();
+        inputValueReg(splByLinearReg);
+        displaySPL(splByLinearReg);
     }
 
 }
