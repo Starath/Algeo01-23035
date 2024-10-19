@@ -31,9 +31,6 @@ public class SPL {
         this.variables = this.solutions.length; 
     }
 
-    public boolean oneSolution(){return oneSolution;}
-    public boolean noSolution(){return noSolution;}
-    public boolean infSolution(){return infSolution;}
     public void setOneSolution() {oneSolution = true;}
     public void setNoSolution() {noSolution = true;}
     public void setInfSolution() {infSolution = true;}
@@ -55,12 +52,14 @@ public class SPL {
         int row = M.rowCount(), col = M.colCount();
         SPL result = new SPL(col -1);
 
-        if(T.colCutter(col-1).hasZeroRow()){
-            if(T.hasZeroRow()) result.setInfSolution();
+        if(T.colCutter(col-1).hasZeroRow() || T.colCutter(col-1).hasFreeVariables()){
+            if(T.hasZeroRow() || T.colCutter(col-1).hasFreeVariables()) {
+                result = parametricWriter(T);
+                result.setInfSolution();}
             else result.setNoSolution();
         }
         // Kalo solusi unik
-        if (!result.noSolution && !result.infSolution()){
+        if (!result.noSolution && !result.infSolution){
             result.setOneSolution();
             for(int i = 0; i < row; i++){
                 result.solutions[i] = T.getElmt(i, col-1);
@@ -74,13 +73,17 @@ public class SPL {
      int row = M.rowCount(), col = M.colCount();
      SPL result = new SPL(col -1);
 
-     if(T.colCutter(col-1).hasZeroRow()){
-         if(T.hasZeroRow()) result.setInfSolution();
-         else result.setNoSolution();
+     if(T.colCutter(col-1).hasZeroRow() || T.colCutter(col-1).hasFreeVariables()){
+         if(T.hasZeroRow() || T.colCutter(col-1).hasFreeVariables()) {
+            T = MatrixAdv.getRREMatrix(M);
+            result = parametricWriter(T);
+            result.setInfSolution();}
+         else {
+            result.setNoSolution();}
      }
      // Jika tidak ada row zero
 
-     if (!result.noSolution && !result.infSolution()) {
+     if (!result.noSolution && !result.infSolution) {
          result.setOneSolution();
 
          // Back Substitution
@@ -156,7 +159,8 @@ public class SPL {
         int i, j, k;
         boolean[] isFreeVariable = new boolean[col];
         double[] constantsHolder = new double[col];
-        int paramCount = 1;
+        String params = "abcdefghijklmnopqrstuvwxyz";
+        int paramCount = 0;
         SPL result = new SPL(col);
 
         // Initialize paramSolutions and isFreeVariable;
@@ -179,7 +183,7 @@ public class SPL {
             
             if (isFreeVariable[j]) {
                 // Initialize the free variable with a parameter like t1, t2, etc.
-                result.setParamSolutions(j, "t" + paramCount);
+                result.setParamSolutions(j, "" + params.charAt(paramCount));
                 paramCount++; // Increment paramCount here for free variables
             }
          }

@@ -216,4 +216,18 @@ public class Matrix {
         }
         return zeroRow;
     }
+
+    public boolean hasFreeVariables(){
+        for(int j = 0; j< Col; j++){
+            boolean freeVariable = true;
+            for(int i = 0 ; i < Row; i++){
+                if(getElmt(i, j) == 1 ){
+                   freeVariable = false;
+                   break;
+               }
+            if(freeVariable) return true;
+           }
+        }
+        return false;
+    }
 }
