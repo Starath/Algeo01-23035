@@ -230,11 +230,12 @@ public class SPL {
         return result;
     }
     public static void main(String[] args) {
-        Matrix M = IO.keyboardInputMatrix(4, 6);
+        Matrix M = IO.keyboardInputMatrix(3, 7);
+        SPL R = gaussElim(M);
         M = MatrixAdv.getRREMatrix(M);
-        IO.terminalOutputMatrix(M);
-        SPL R = parametricWriter(M);
-        R.setInfSolution();
+        SPL S = parametricWriter(M);
         R.displaySolutions();
+        S.setInfSolution();
+        S.displaySolutions();
     }
 } 

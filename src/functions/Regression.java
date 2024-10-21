@@ -5,7 +5,7 @@ package functions;
 import java.util.*;
 import matrix.*;
 
-public class LinearRegression {
+public class Regression {
     /* ============== 1. MULTIPLE LINEAR REGRESSION =================*/
     public static SPL MultipleLinearReg(Matrix matrixData, int nPeubah, int totalSampel){
     /*asumsi matrix data terdiri dari data2 Xi dan Y. colCount = (nPeubah + 1) */

@@ -1,10 +1,10 @@
 package functions;
 
-import matrix.*;
-import main.*;
 import java.util.*;
+import main.*;
+import matrix.*;
 
-public class PolynomialInterpolation {
+public class PolyInterpolation {
 
     public static Scanner scan;
     public static Matrix KeyboardInputPoints() {
