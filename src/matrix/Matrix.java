@@ -221,13 +221,14 @@ public class Matrix {
         for(int j = 0; j< Col; j++){
             boolean freeVariable = true;
             for(int i = 0 ; i < Row; i++){
-                if(getElmt(i, j) == 1 ){
+                if(getElmt(i, j) != 0){
                    freeVariable = false;
                    break;
                }
+            }
             if(freeVariable) return true;
-           }
         }
         return false;
     }
+
 }
