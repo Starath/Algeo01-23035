@@ -1,8 +1,10 @@
 package functions;
 
-import java.util.*;
 import main.*;
+import java.util.*;
+import java.io.*;
 import matrix.*;
+
 
 public class PolyInterpolation {
 
@@ -11,20 +13,60 @@ public class PolyInterpolation {
         Matrix mPoints;
         int nPoints;
         scan = new Scanner(System.in);
-        System.out.println("Masukkan banyak seluruh titik : ");
-        //MASIH PERLU CEK INPUT
-        nPoints = scan.nextInt();
-        //MASIH PERLU CEK INPUT
-        mPoints = new Matrix(nPoints, 2);
-        for (int i = 0; i < nPoints; i++) {
-            //MASIH PERLU CEK INPUT
-            System.out.printf("Masukkan titik x%d dan y%d : ", i + 1, i + 1);
-            mPoints.setElmt(i, 0, scan.nextDouble());
-            mPoints.setElmt(i, 1, scan.nextDouble());
-            //MASIH PERLU CEK INPUT
+        while (true) {
+            try {
+                System.out.print("Masukkan banyak seluruh titik: ");
+                nPoints = scan.nextInt();
+                if (nPoints > 0) {  // Pastikan input nPoints adalah bilangan positif
+                    break;
+                } else {
+                    System.out.println("Jumlah titik harus lebih dari 0. Coba lagi.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan bilangan bulat positif.");
+                scan.next(); // Membersihkan input yang salah
+            }
         }
+
+        mPoints = new Matrix(nPoints, 2);
+
+        // Loop untuk memasukkan setiap titik x dan y
+        for (int i = 0; i < nPoints; i++) {
+            double x = 0, y = 0;
+            System.out.printf("Masukkan titik x%d dan y%d : ", i + 1, i + 1);
+
+            // Validasi input untuk koordinat x
+            while (true) {
+                try {
+                    System.out.print("x" + (i + 1) + ": ");
+                    x = scan.nextDouble();
+                    break;  // Keluar dari loop jika input valid
+                } catch (InputMismatchException e) {
+                    System.out.println("Input tidak valid. Harap masukkan angka untuk koordinat x.");
+                    scan.next(); // Membersihkan input yang salah
+                }
+            }
+
+            // Validasi input untuk koordinat y
+            while (true) {
+                try {
+                    System.out.print("y" + (i + 1) + ": ");
+                    y = scan.nextDouble();
+                    break;  // Keluar dari loop jika input valid
+                } catch (InputMismatchException e) {
+                    System.out.println("Input tidak valid. Harap masukkan angka untuk koordinat y.");
+                    scan.next(); // Membersihkan input yang salah
+                }
+            }
+
+            // Set elemen di matriks untuk titik tersebut
+            mPoints.setElmt(i, 0, x);  // Set x
+            mPoints.setElmt(i, 1, y);  // Set y
+        }
+        scan.close();
         return mPoints;
     }
+    
 
     public static Matrix PointstoMatrix(Matrix mPoints) {
         // Mengubah matrix dari input point-point menjadi matrix interpolasi
@@ -42,7 +84,7 @@ public class PolyInterpolation {
     }
 
     public static SPL InterpolationFunction(Matrix otwSolved) {
-        SPL solusi = new SPL(otwSolved.rowCount() - 1);
+        SPL solusi;
         solusi = SPL.gaussJordanElim(otwSolved);
         return solusi;
     }
@@ -63,25 +105,99 @@ public class PolyInterpolation {
         }
     }
 
-    public static double InterpolationFX(SPL solusi, double Absis) {
+    public static void InterpolationFX(SPL solusi) {
         double Ordinat = 0;
-        for (int index = 0; index < solusi.variables; index++) {
-            Ordinat += solusi.solutions[index] * Math.pow(Absis,index);
+        System.out.printf("Masukkan absis titik : ");
+        double absis;
+        // Validasi input untuk koordinat x
+        while (true) {
+            try {
+                absis = scan.nextDouble();
+                break;  // Keluar dari loop jika input valid
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka untuk koordinat x.");
+                scan.next(); // Membersihkan input yang salah
+            }
         }
-        return Ordinat;
+        for (int index = 0; index < solusi.variables; index++) {
+            Ordinat += solusi.solutions[index] * Math.pow(absis,index);
+        }
+        System.out.println("P(" + absis + ") = " + Ordinat);
     }
 
-    public static void main(String[] args) {
-        Matrix mPoints;
-        mPoints = KeyboardInputPoints();
-        Matrix otwSolved = PointstoMatrix(mPoints);
-        IO.terminalOutputMatrix(otwSolved);
-        otwSolved = MatrixAdv.getRREMatrix(otwSolved);
-        IO.terminalOutputMatrix(otwSolved);
-        SPL solusi = InterpolationFunction(otwSolved);
-        OutputInterpolation(solusi);
-        System.out.println(InterpolationFX(solusi, 3));
-
+    public static void FileInputPoints(Matrix mPoints, double Absis)  {
+        scan = new Scanner(System.in);
+        int index = 0;
+        System.out.println("Masukkan nama file (contoh: a.txt)");
+        String filename = scan.nextLine();
+        String path = "..\\test\\" + filename;
+        System.out.println("Opening " + path + "...");
+        
     }
 
+    public static void main(String[] args) 
+    {
+        int pilihan;
+        Scanner scan = new Scanner(System.in);
+        System.out.println("");
+        while(true) 
+        {
+            Main.clearScreen();
+            Main.border();
+            System.out.println("Menu Input Matriks");
+            Main.border();
+            System.out.println("1. Input dari keyboard");
+            System.out.println("2. Input dari file");
+            System.out.print("Pilih metode: ");
+            pilihan = -1;  // Inisialisasi dengan nilai di luar rentang yang valid
+            boolean isCancel = false; // Flag untuk pengecekan apakah user ingin cancel
+
+            try {
+                System.out.printf("Pilih metode (ketik 0 untuk batal): ");
+                pilihan = scan.nextInt();
+
+                // Cek apakah user ingin membatalkan input
+                if (pilihan == 0) {
+                    System.out.println("Input dibatalkan.");
+                    isCancel = true; // Set flag cancel
+                    break;
+                }
+                // Validasi apakah pilihan termasuk dalam rentang 1 hingga 3
+                if (pilihan >= 1 && pilihan <= 2) {
+                    System.out.println("Anda memilih metode " + pilihan);
+                } else {
+                    System.out.println("Pilihan tidak valid. Harap masukkan angka 1 hingga 3.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka.");
+                scan.next(); // Membersihkan input yang salah
+            }
+    
+            // Tindakan setelah input selesai
+            if (!isCancel) {
+                System.out.println("Proses dilanjutkan dengan pilihan: " + pilihan);
+            } else {
+                break;
+            }
+            scan.close();    
+
+            if (pilihan == 1) {
+                Matrix mPoints = PolyInterpolation.KeyboardInputPoints();
+                Matrix mInterpolate = PolyInterpolation.PointstoMatrix(mPoints);  
+                SPL solusi = PolyInterpolation.InterpolationFunction(mInterpolate);
+                PolyInterpolation.OutputInterpolation(solusi);
+                Main.border();
+                PolyInterpolation.InterpolationFX(solusi);
+                Main.border();
+            } else if (pilihan == 2) {
+                // Matrix mPoints = PolyInterpolation.FileInputPoints();
+                // Matrix mInterpolate = PolyInterpolation.PointstoMatrix(mPoints);  
+                // SPL solusi = PolyInterpolation.InterpolationFunction(mInterpolate);
+                // PolyInterpolation.OutputInterpolation(solusi);
+                // Main.border();
+                // PolyInterpolation.InterpolationFX(solusi);
+                // Main.border();
+            }
+        }
+    }
 }
