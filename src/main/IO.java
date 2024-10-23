@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.RenderingHints;
 import java.io.*;
 import java.util.*;
 import matrix.*;
@@ -12,7 +13,8 @@ public class IO {
     /* ===========================================*/
 
     /*=================== INPUT ==================*/
-    public static Matrix keyboardInputMatrix(int row, int col){
+    public static Matrix keyboardInputMatrix(){
+        int row = -1, col = -1;
         scan = new Scanner(System.in);
         if (row == -1 || col == -1){
             System.out.print("Masukkan jumlah baris: ");
@@ -110,7 +112,7 @@ public class IO {
     // }
     public static void main(String[] args) {
         Matrix M;
-        M = fileInputMatrix();
+        M = keyboardInputMatrix();
         terminalOutputMatrix(M);
     }
 
