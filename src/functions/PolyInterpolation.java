@@ -2,6 +2,9 @@ package functions;
 
 import java.util.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import main.IO;
@@ -134,17 +137,21 @@ public class PolyInterpolation {
     }
 
 
+
+
     public static void main(String[] args) 
     {
-        int pilihan;
-        double Absis, Ordinat;
-        Matrix mPoints = PolyInterpolation.KeyboardInputPoints();
-        Matrix mHasil = PolyInterpolation.PointstoMatrix(mPoints);
-        SPL solusi = PolyInterpolation.InterpolationFunction(mHasil);
-        PolyInterpolation.OutputInterpolation(solusi);
-        System.out.println("");
-        Absis = PolyInterpolation.setAbsis();
-        Ordinat = PolyInterpolation.InterpolationFX(solusi, Absis);
+        String path = IO.inputFileName(); 
+        int row = IO.FileRowCounter(path);
+        Matrix mPoints = IO.fileInputMatrix(path, row - 1, 2);
+        IO.terminalOutputMatrix(mPoints);
+        double Absis = IO.AbsisFileInput(path, row);
+        System.out.print(Absis);
+        // Matrix mPoints = new Matrix(2,2);
+        // double Absis = 0;
+        // InterpolateFileInput(mPoints, Absis);
+        // IO.terminalOutputMatrix(mPoints);
+        // System.out.print(Absis);
         // Scanner scan = new Scanner(System.in);
         // System.out.println("");
         // while(true) 

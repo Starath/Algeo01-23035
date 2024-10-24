@@ -96,6 +96,49 @@ public class IO {
             return points;
         }
     }    
+    
+    public static int FileRowCounter(String path) {
+        Scanner fileScanner;
+        while (true) { 
+            try {
+                fileScanner = new Scanner(new FileReader(path));
+                break;
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found...");
+                path = IO.inputFileName();
+            }
+        }
+
+        int rowCounter = 0;
+        while (fileScanner.hasNextLine()) {
+            fileScanner.nextLine();
+            rowCounter++;
+        }
+        return rowCounter;
+    }
+
+    public static double AbsisFileInput(String path, int rowCounter) {
+        Scanner fileScanner;
+        int i = 0; 
+        double Absis;
+        while (true) { 
+            try {
+                fileScanner = new Scanner(new FileReader(path));
+                break;
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found...");
+                path = IO.inputFileName();
+            }
+        }
+
+        while (i < rowCounter - 1) {
+            fileScanner.next();
+            i++;
+        }
+        Absis = fileScanner.nextDouble();
+        return Absis;
+    }
+
     /*============================================ */
     /*=================== OUTPUT ==================*/
     /*============================================ */
@@ -208,6 +251,7 @@ public class IO {
         System.setOut(ConsoleOut);
         if(success){System.out.println("Saved to file successfully! ");} 
     }
+
 
 
     /* ===========================================*/
