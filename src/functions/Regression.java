@@ -323,68 +323,6 @@ public class Regression {
 
         // }
 
-        // clearScreen();
-        // border();
-        // System.out.println("REGRESI BERGANDA");
-        // System.out.println("1. Metode Regresi Linear Berganda");
-        // System.out.println("2. Metode Regresi Kuadratik Berganda");
-        // System.out.println("3. Kembali\n");
-        // System.out.print("Pilih metode: ");
-        // pilihanMet = scan.nextInt();
-        
-        // if (pilihanMet == 3) {break;}
-        // else if(pilihanMet == 1 || pilihanMet == 2){
-        //     /*1. Input Nilai X  */
-        //     Matrix M = inputMatrix("regresi");
-        //     int totalSampel = M.rowCount();
-        //     int nPeubah = M.colCount();
-            
-        //     /*2. Input Nilai Y */
-        //     Matrix Y = Regression.inputValue(totalSampel, "Y");
-            
-        //     /*3. Menambah Kolom (matriks) Y ke samping kanan matriks M */
-        //     Matrix regressionMatrix = Regression.MatrixExtender(M, Y, nPeubah);
-        //     border();
-            
-        //     /*4. Menampilkan hasil dari regresi dalam bentuk SPL */
-        //     System.out.println("Berikut hasil SPL: ");
-        //     switch (pilihanMet) {
-        //         case 1 -> Regression.displaySPL(Regression.MultipleLinearReg(regressionMatrix, nPeubah, totalSampel)); // kedua ini nanti ganti
-        //         case 2 -> Regression.displaySPL(Regression.MultipleCuadraticReg(regressionMatrix, nPeubah, totalSampel)); // kedua ini nanti ganti
-        //     }
-        //     System.out.println("\n");
-        //     border();
-            
-        //     /*5. Menerima input nilai Xi sejumlah nPeubah untuk memprediksi hasil akhirnya */
-        //     Matrix Xk = Regression.inputValue(nPeubah, "Xk");                        
-
-        //     /*6. Memprediksi nilai  */
-        //     if (pilihanMet == 2) {
-        //         // int row = Regression.combination(nPeubah, 2);
-        //         Matrix XCuadratic = Regression.valueOfXCuadratic(Xk, nPeubah);                        
-        //         Regression.predictByValueX(Regression.MultipleCuadraticReg(regressionMatrix, nPeubah, totalSampel), XCuadratic);
-        //     }
-        //     else{
-        //         Regression.predictByValueX(Regression.MultipleLinearReg(regressionMatrix, nPeubah, totalSampel), Xk);
-        //     }
-        // }
-        // else {
-        //     System.out.println("Input tidak valid!");
-        //     confirmExit();
-        //     continue;
-        // }
-        // confirmExit();
-
-        
-        // if (tipe == "regresi"){
-        //     System.out.print("""
-        //         (Jumlah baris adalah Banyaknya sampel) 
-        //         (Jumlah kolom adalah banyaknya peubah) 
-        //         """);
-        // }
-        
-
-
     }
 
 }
