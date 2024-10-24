@@ -1,4 +1,5 @@
 package main;
+
 import functions.*;
 import java.util.*;
 import matrix.*;
@@ -232,7 +233,7 @@ public class Main {
                         b = scan.nextDouble();
                     } else{
                         String path = IO.inputFileName();
-                        M = IO.fileInputMatrix(path);
+                        M = IO.fileInputMatrix(path, 4, 4);
                         double[] points = IO.fileInputPoints(path, M.rowCount());
                         a = points[0];
                         b = points[1];
@@ -357,7 +358,7 @@ public class Main {
             System.out.println("2. Input dari file");
             System.out.print("Pilih metode: ");
             pilihan = scan.nextInt();
-
+            System.out.println("");
             if(pilihan != 1 && pilihan != 2){
                 System.out.println("Input tidak Valid!");
                 confirmExit();
@@ -369,7 +370,7 @@ public class Main {
 
     public static Matrix inputMatrix(String tipe){
         Matrix M;
-        int row,col;
+        int row = 0,col = 0;
         int pilihInput = inputMain();
         if (tipe == "regresi"){
             System.out.print("""
@@ -377,18 +378,21 @@ public class Main {
                 (Jumlah kolom adalah banyaknya peubah) 
                 """);
         }
-
+        
+        
         System.out.print("Jumlah baris: ");
         row = scan.nextInt();
         System.out.print("Jumlah kolom: ");
         col = scan.nextInt();
+        System.out.println("");
+        
     
         if(pilihInput == 1){
             System.out.println("Masukkan Elemen-elemen Matriks: ");
             M = IO.keyboardInputMatrix(row, col);
         } else {
             String path = IO.inputFileName();
-            M = IO.fileInputMatrix(path);
+            M = IO.fileInputMatrix(path, row, col);
         }
         return M;
     }
@@ -413,32 +417,6 @@ public class Main {
                 continue;
             }
             return pilihan;
-
-        //     if (pilihan == 1 || pilihan == 3){
-        //         System.out.print("Determinan Matriks: ");
-        //         if (tipe.equals("det1") || tipe.equals("det2")){
-        //             switch (tipe) {
-        //                 case "det1": 
-        //                     System.out.println(MatrixAdv.detByGauss(M)); // kedua ini nanti ganti
-        //                     break;
-        //                 case "det2":
-        //                     System.out.println(MatrixAdv.detByCofactor(M));
-        //                     break;
-        //             }
-        //             break;}
-        //         // OUTPUT MATRIX 
-        //         else {
-        //         IO.terminalOutputMatrix(M);
-        //         break;}
-
-        //     } else if(pilihan == 2){
-        //         IO.fileOutputMatrix();
-        //         break;
-        //     } else {
-        //         System.out.println("Input tidak valid!\n");
-        //         confirmExit();
-        //         break;
-        //     }
 
         }
     }

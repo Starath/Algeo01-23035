@@ -199,7 +199,8 @@ public class Regression {
                     M = IO.keyboardInputMatrix(row,1);
                     break;
                 } else if(pilihan == 2){
-                    M = IO.fileInputMatrix();
+                    String path = IO.inputFileName();
+                    M = IO.fileInputMatrix(path);
                     break;
                 } else {
                     System.out.println("Input tidak valid!\n");
@@ -221,7 +222,8 @@ public class Regression {
                     M = IO.keyboardInputMatrix(row,1);
                     break;
                 } else if(pilihan == 2){
-                    M = IO.fileInputMatrix();
+                    String path = IO.inputFileName();
+                    M = IO.fileInputMatrix(path);
                     break;
                 } else {
                     System.out.println("Input tidak valid!\n");

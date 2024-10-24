@@ -43,7 +43,7 @@ public class IO {
         String path = "..\\test\\" + filename;
         return path;
     }
-    public static Matrix fileInputMatrix(String path){
+    public static Matrix fileInputMatrix(String path, int row, int col){
         System.out.println("Opening " + path + "...");
 
         try {
@@ -52,20 +52,13 @@ public class IO {
             File file = new File(path);
             Scanner scanFile = new Scanner(file);
 
-            // Taro di luar? biar ngeliat m sekali aja
-            while(scanFile.hasNextLine()){
-                nCol = (scanFile.nextLine().split(" ").length);
-                nRow++;
-            }
-            scanFile.close();
-
             // Create matrix
-            Matrix M = new Matrix(nRow, nCol);
+            Matrix M = new Matrix(row, col);
             scanFile = new Scanner(file);
 
             // Read file and assign each element
-            for (int i = 0; i < nRow; i++){
-                for (int j = 0; j < nCol; j++){
+            for (int i = 0; i < row; i++){
+                for (int j = 0; j < col; j++){
                     M.setElmt(i, j, scanFile.nextDouble());
                 }
             }
@@ -150,7 +143,7 @@ public class IO {
             success = false;
         }
         System.setOut(consoleOut);
-        if(success){System.out.println("Saved to file successfully! ");}
+        if(success){System.out.println("\nSaved to file successfully! \n");}
     }
 
     public static void fileOutputDetorBicubic(double val, String tipe){
@@ -173,7 +166,7 @@ public class IO {
             success = false;
         }
         System.setOut(consoleOut);
-        if(success){System.out.println("Saved to file successfully! ");}
+        if(success){System.out.println("\nSaved to file successfully! \n");}
     }
 
     public static void fileOutputInvers(Matrix invers){
@@ -191,7 +184,7 @@ public class IO {
             success = false;
         }
         System.setOut(consoleOut);
-        if(success){System.out.println("Saved to file successfully! ");}
+        if(success){System.out.println("\nSaved to file successfully! \n");}
     }
     public static void FileOutputInterpolations(SPL solutions, double Absis, double Ordinat)  {
         String path = IO.fileOutputMaster();
