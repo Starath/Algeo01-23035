@@ -133,28 +133,6 @@ public class PolyInterpolation {
         return Ordinat;
     }
 
-    public static void fileoutputinterpolations(SPL solutions, double Absis, double Ordinat)  {
-        String path = IO.fileOutputMaster();
-        PrintStream ConsoleOut = System.out;
-        boolean success;
-        try {
-            PrintStream fileOutput = new PrintStream(new File(path));
-            System.setOut(fileOutput);
-            if(solutions.isNoSolution()){
-                System.out.println("Tidak terdapat persamaan polinomial");
-            } else {
-                PolyInterpolation.OutputInterpolation(solutions);
-                System.out.println("P(" + Absis + ") = " + Ordinat + "\n");
-            }
-            fileOutput.close();
-            success = true;
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found or could not be created.");
-            success = false;
-        }
-        System.setOut(ConsoleOut);
-        if(success){System.out.println("Saved to file successfully! ");} 
-    }
 
     public static void main(String[] args) 
     {
@@ -167,7 +145,6 @@ public class PolyInterpolation {
         System.out.println("");
         Absis = PolyInterpolation.setAbsis();
         Ordinat = PolyInterpolation.InterpolationFX(solusi, Absis);
-        PolyInterpolation.fileoutputinterpolations(solusi, Absis, Ordinat);
         // Scanner scan = new Scanner(System.in);
         // System.out.println("");
         // while(true) 
