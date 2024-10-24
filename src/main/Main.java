@@ -191,30 +191,41 @@ public class Main {
                     clearScreen();
                     border();
                     System.out.println("INTERPOLASI POLINOMIAL");
-                    System.out.println("(ketik 0 untuk kembali)");
-                    int pilihInput = inputMain();
-                    if(pilihInput == 1)
-                    {
-                        mPoints = PolyInterpolation.KeyboardInputPoints();
-                        border();
-                        mHasil = PolyInterpolation.PointstoMatrix(mPoints);
-                        clearScreen();
-                        System.out.println("Matrix untuk interpolasi polinomial  : ");
-                        IO.terminalOutputMatrix(mHasil);
-                        SPL solutions = PolyInterpolation.InterpolationFunction(mHasil);
-                        border();
-                        System.out.println("Persamaan polinomial yang diperoleh: ");
-                        PolyInterpolation.OutputInterpolation(solutions);
-                        System.out.println("");
-                        border();
-                        System.out.printf("Masukkan absis titik : ");
-                        Absis = PolyInterpolation.setAbsis();
-                        // Validasi input untuk koordinat x
-                        double Ordinat = PolyInterpolation.InterpolationFX(solutions, Absis);
-                        border();
-                    } else if(pilihInput == 2) {
-                        
+                    System.out.println("1. Interpolasi");
+                    System.out.println("0. Kembali");
+                    pilihanMet = scan.nextInt();
+                    if(pilihanMet == 1){
+                        int pilihInput = inputMain();
+                        if(pilihInput == 1)
+                        {
+                            mPoints = PolyInterpolation.KeyboardInputPoints();
+                            border();
+                            mHasil = PolyInterpolation.PointstoMatrix(mPoints);
+                            clearScreen();
+                            System.out.println("Matrix untuk interpolasi polinomial  : ");
+                            IO.terminalOutputMatrix(mHasil);
+                            SPL solutions = PolyInterpolation.InterpolationFunction(mHasil);
+                            border();
+                            System.out.println("Persamaan polinomial yang diperoleh: ");
+                            PolyInterpolation.OutputInterpolation(solutions);
+                            System.out.println("");
+                            border();
+                            System.out.printf("Masukkan absis titik : ");
+                            Absis = PolyInterpolation.setAbsis();
+                            // Validasi input untuk koordinat x
+                            double Ordinat = PolyInterpolation.InterpolationFX(solutions, Absis);
+                            border();
+                        } else if(pilihInput == 2) {
+                            
+                        }
                     }
+                    else if(pilihanMet == 0){
+                        break;
+                    } else {
+                        System.out.println("Input tidak valid!");
+                        confirmExit();
+                    }
+                    confirmExit();
                 }
 
                 /*************************************************/
@@ -240,7 +251,10 @@ public class Main {
                     }
                     
                     double interpolated = Bicubic.bicubicInterpolation(M, a, b);
-
+                    System.out.println("BICUBIC INTERPOLATION");
+                    System.out.println("1. Interpolasi");
+                    System.out.println("0. Kembali");
+                    pilihanMet = sca
                     int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         border();
