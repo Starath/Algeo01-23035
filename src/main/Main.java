@@ -1,4 +1,5 @@
 package main;
+import functions.*;
 import java.util.*;
 import matrix.*;
 
@@ -44,6 +45,9 @@ public class Main {
             pilihan = scan.nextInt();
 
             while (true) {
+
+                /*************************************************/
+                /*                    SPL                        */
                 if (pilihan == 1) {
                     tipe = "spl";
                     clearScreen();
@@ -57,20 +61,37 @@ public class Main {
                     System.out.print("Pilih metode: ");
                     pilihanMet = scan.nextInt();
 
-                    if (pilihanMet == 1) {break;}
-                    else if(pilihMetode == 2) {}
-                    else if(pilihMetode == 3) {}
-                    else if(pilihMetode == 4) {}
-                    else if(pilihMetode == 5) break;
-                    else System.out.println("Input tidak valid!");
+                    Matrix M = inputMain(tipe);
+                    SPL resultSPL;
+                    if (pilihanMet == 1) resultSPL = SPL.gaussElim(M);
+                    else if(pilihanMet == 2) resultSPL = SPL.gaussJordanElim(M);
+                    else if(pilihanMet== 3) resultSPL = SPL.inverseSPL(M);
+                    else if(pilihanMet == 4) resultSPL = SPL.cramerMethodSPL(M);
+                    else if(pilihanMet == 5) break;
+                    else {
+                        System.out.println("Input tidak valid!");
+                        confirmExit();
+                        continue;}
+
+                    int pilihOutput = outputMain(M, tipe);
+                    if(pilihOutput == 1){
+                        if(resultSPL.isNoSolution()){
+                            System.out.println("SPL tidak memiliki solusi / solusi tidak ditemukan");
+                        } else {
+                            resultSPL.displaySolutions();
+                        }
+                    }
                     confirmExit();
-                }
+                    }
 
 
 
-
+                /*************************************************/
+                /*              DETERMINAN                       */
                 else if (pilihan == 2) {
                     tipe = "det";
+                    double det;
+                    Matrix M;
                     clearScreen();
                     border();
                     System.out.println("DETERMINAN MATRIKS");
@@ -80,20 +101,34 @@ public class Main {
                     System.out.print("Pilih metode: ");
                     pilihanMet = scan.nextInt();
 
-                    if (pilihanMet == 3) {break;}
-                    else if(pilihanMet == 1 || pilihanMet == 2){
-                        tipe += pilihanMet;
-                        Matrix M = inputMain();
-                        border();
-                        outputMain(M, tipe);
-                        border();
+                    if (pilihanMet == 1) {
+                        M = inputMain(tipe);
+                        det = MatrixAdv.detByGauss(M);}
+
+                    else if(pilihanMet == 2) {
+                        M = inputMain(tipe);
+                        det = MatrixAdv.detByCofactor(M);}
+
+                    else if (pilihanMet == 3) {break;}
+                    else {
+                        System.out.println("Input tidak valid!");
+                        confirmExit();
+                        continue;
                     }
-                    else System.out.println("Input tidak valid!");
-                    confirmExit();
+                    int pilihOutput = outputMain(M, tipe);
+                    if(pilihOutput == 1){
+                        border();
+                        System.out.println("Determinan Matriks: " + det);
+                        border();
+                        confirmExit();
+                    }
                 }
 
+                /*************************************************/
+                /*                     INVERS                    */
                 else if (pilihan == 3) {
                     tipe = "invers";
+                    Matrix M, invers;
                     clearScreen();
                     border();
                     System.out.println("MATRIKS BALIKAN");
@@ -103,33 +138,45 @@ public class Main {
                     System.out.print("Pilih metode: ");
                     pilihanMet = scan.nextInt();
 
-                    if (pilihanMet == 3) {break;}
-                    else if(pilihanMet == 1 || pilihanMet == 2){
-                        Matrix M = inputMatrix(-1,-1); // Ntar ganti sama inputMatrix
-                        border();
-                        System.out.println("Matriks Balikan: ");
-                        switch (pilihanMet) {
-                            case 1 -> IO.terminalOutputMatrix(MatrixAdv.inverseByOBE(M)); // kedua ini nanti ganti
-                            case 2 -> IO.terminalOutputMatrix(MatrixAdv.inverseByAdjoin(M)); // kedua ini nanti ganti
-                        }
-                        border();
+                    if(pilihanMet == 1){
+                        M = inputMain(tipe);
+                        invers = MatrixAdv.inverseByOBE(M);
                     }
+                    else if(pilihanMet == 2){
+                        M = inputMain(tipe);
+                        invers = MatrixAdv.inverseByAdjoin(M);
+                    }
+                    else if(pilihanMet == 3)break;
                     else {
                         System.out.println("Input tidak valid!");
+                        confirmExit();
+                        continue;
                     }
 
-                    confirmExit();
+                    int pilihOutput = outputMain(M, tipe);
+                    if(pilihOutput == 1){
+                        IO.terminalOutputMatrix(invers);
+                    }
                 }
+
+                /*************************************************/
+                /*                   POLINOM                     */
                 else if (pilihan == 4) {
                     tipe = "polinom";
                 }
+
+                /*************************************************/
+                /*                    BICUBIC                    */
                 else if (pilihan == 5) {
                     tipe = "bicubic";
-                    Matrix M = inputMatrix(4, 4);
+                    Matrix M = inputMain(tipe);
                     double a = scan.nextDouble();
                     double b = scan.nextDouble();
 
                 }
+
+                /*************************************************/
+                /*                   REGRESI                     */
                 else if (pilihan == 6) {
                     tipe = "regresi";
                 }
@@ -164,9 +211,10 @@ public class Main {
     }
 
     // Pilihan Input Matrix
-    public static Matrix inputMain(){
+    public static Matrix inputMain(String tipe){
         Matrix M;
         int pilihan;
+        int row = 0,col = 0;
         Scanner scan = new Scanner(System.in);
         System.out.println("");
         while(true) {
@@ -180,19 +228,27 @@ public class Main {
             pilihan = scan.nextInt();
 
             if (pilihan == 1){
-                int row = scan.nextInt();
-                int col = scan.nextInt(); 
+                if(tipe.equals("bicubic")){
+                    row = 4;
+                    col = 4;
+                }
+                else{
+                    System.out.print("Jumlah Baris: ");
+                    row = scan.nextInt();
+                    System.out.print("Jumlah Kolom: ");
+                    col = scan.nextInt(); 
+                }
                 M = IO.keyboardInputMatrix(row,col);
                 break;
-            } else if(pilihan == 2){
+            } 
+            
+            else if(pilihan == 2){
                 M = IO.fileInputMatrix();
                 break;
             } else {
                 System.out.println("Input tidak valid!\n");
                 confirmExit();
-                M = new Matrix(1,1);
-                M.setElmt(0, 0, 0);
-                return M;
+                continue;
             }
 
         }
@@ -200,7 +256,7 @@ public class Main {
         
     }
     // Pilihan Output Matrix
-    public static void outputMain(Matrix M, String tipe){
+    public static int outputMain(Matrix M, String tipe){
         int pilihan;
         Scanner scan = new Scanner(System.in);
         System.out.println("");
@@ -211,35 +267,40 @@ public class Main {
             border();
             System.out.println("1. Output ke terminal");
             System.out.println("2. Output ke file");
-            System.out.println("3. Output ke terminal & simpan ke file");
             System.out.print("Pilih metode: ");
             pilihan = scan.nextInt();
-
-            if (pilihan == 1 || pilihan == 3){
-                System.out.print("Determinan Matriks: ");
-                if (tipe.equals("det1") || tipe.equals("det2")){
-                    switch (tipe) {
-                        case "det1": 
-                            System.out.println(MatrixAdv.detByGauss(M)); // kedua ini nanti ganti
-                            break;
-                        case "det2":
-                            System.out.println(MatrixAdv.detByCofactor(M));
-                            break;
-                    }
-                    break;}
-                // OUTPUT MATRIX 
-                else {
-                IO.terminalOutputMatrix(M);
-                break;}
-
-            } else if(pilihan == 2){
-                IO.fileOutputMatrix();
-                break;
-            } else {
-                System.out.println("Input tidak valid!\n");
+            if(pilihan != 1 || pilihan != 2){
+                System.out.println("Input tidak Valid!");
                 confirmExit();
-                break;
+                continue;
             }
+            return pilihan;
+
+        //     if (pilihan == 1 || pilihan == 3){
+        //         System.out.print("Determinan Matriks: ");
+        //         if (tipe.equals("det1") || tipe.equals("det2")){
+        //             switch (tipe) {
+        //                 case "det1": 
+        //                     System.out.println(MatrixAdv.detByGauss(M)); // kedua ini nanti ganti
+        //                     break;
+        //                 case "det2":
+        //                     System.out.println(MatrixAdv.detByCofactor(M));
+        //                     break;
+        //             }
+        //             break;}
+        //         // OUTPUT MATRIX 
+        //         else {
+        //         IO.terminalOutputMatrix(M);
+        //         break;}
+
+        //     } else if(pilihan == 2){
+        //         IO.fileOutputMatrix();
+        //         break;
+        //     } else {
+        //         System.out.println("Input tidak valid!\n");
+        //         confirmExit();
+        //         break;
+        //     }
 
         }
     }

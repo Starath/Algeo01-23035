@@ -23,7 +23,6 @@ public class IO {
         }
         
         Matrix M = new Matrix(row, col);
-        System.out.println("Masukkan elemen-elemen matriks");
         for (int i = 0; i < M.rowCount(); i++){
             for (int j = 0; j < M.colCount(); j++){
                 double elm = scan.nextDouble();

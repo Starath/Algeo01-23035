@@ -89,7 +89,6 @@ public class Bicubic {
         System.out.println(bicubicInterpolation(M, a, b));
         Matrix X = getBasisMatrix();
         IO.terminalOutputMatrix(X);
-        IO.terminalOutputMatrix(MatrixAdv.inverseByAdjoin(X));
         System.out.println(MatrixAdv.detByGauss(X));
     }
 }

@@ -34,6 +34,9 @@ public class SPL {
     public void setOneSolution() {oneSolution = true;}
     public void setNoSolution() {noSolution = true;}
     public void setInfSolution() {infSolution = true;}
+    public boolean isOneSolution() {return oneSolution;}
+    public boolean isNoSolution() {return noSolution;}
+    public boolean isInfSolution() {return infSolution;}
     public void setSolutions(int Idx, double val){solutions[Idx] = val;}
     public void setParamSolutions(int Idx, String val){paramSolutions[Idx] = val;}
     public double getSolutions(int Idx){return solutions[Idx];}
@@ -117,6 +120,7 @@ public class SPL {
         SPL result = new SPL(col - 1);
         if (row != col -1 || detA == 0) {
             System.out.println("Tidak dapat diselesaikan dengan metode Cramer");
+            result.setNoSolution();
             return result;
         }
         result.setOneSolution();
@@ -134,6 +138,12 @@ public class SPL {
     }
     public static SPL inverseSPL (Matrix mProblem){
         // Asumsikan matriks invertible (dicek di main)
+        double det = MatrixAdv.detByCofactor(mProblem);
+        if(det == 0){
+            SPL result = new SPL(2);
+            result.setNoSolution();
+            return result;
+        } 
         Matrix A = mProblem.copyMatrix();
         int row = mProblem.rowCount();
         int col = mProblem.colCount();
@@ -235,12 +245,9 @@ public class SPL {
         return result;
     }
     public static void main(String[] args) {
-        Matrix M = IO.keyboardInputMatrix(3, 7);
+        Matrix M = IO.keyboardInputMatrix(4, 6);
         SPL R = gaussElim(M);
         M = MatrixAdv.getRREMatrix(M);
-        SPL S = parametricWriter(M);
         R.displaySolutions();
-        S.setInfSolution();
-        S.displaySolutions();
     }
 } 
