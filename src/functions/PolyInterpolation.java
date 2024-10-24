@@ -108,6 +108,7 @@ public class PolyInterpolation {
     }
 
     public static double setAbsis() {
+        Scanner scan = new Scanner(System.in);
         System.out.printf("Masukkan absis titik : ");
         double absis;
         // Validasi input untuk koordinat x
@@ -158,11 +159,15 @@ public class PolyInterpolation {
     public static void main(String[] args) 
     {
         int pilihan;
+        double Absis, Ordinat;
         Matrix mPoints = PolyInterpolation.KeyboardInputPoints();
         Matrix mHasil = PolyInterpolation.PointstoMatrix(mPoints);
         SPL solusi = PolyInterpolation.InterpolationFunction(mHasil);
         PolyInterpolation.OutputInterpolation(solusi);
         System.out.println("");
+        Absis = PolyInterpolation.setAbsis();
+        Ordinat = PolyInterpolation.InterpolationFX(solusi, Absis);
+        PolyInterpolation.fileoutputinterpolations(solusi, Absis, Ordinat);
         // Scanner scan = new Scanner(System.in);
         // System.out.println("");
         // while(true) 
