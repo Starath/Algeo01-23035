@@ -131,6 +131,8 @@ public class Main {
                         System.out.println("Determinan Matriks: " + det);
                         border();
                         confirmExit();
+                    } else {
+                        IO.fileOutputDet(det);
                     }
                 }
 
@@ -167,6 +169,8 @@ public class Main {
                     int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         IO.terminalOutputMatrix(invers);
+                    } else {
+                        IO.fileOutputInvers(invers);
                     }
                 }
 
@@ -208,7 +212,6 @@ public class Main {
                 /*************************************************/
                 /*                    BICUBIC                    */
                 else if (pilihan == 5) {
-                    tipe = "bicubic";
                     Matrix M;
                     double a,b;
                     int pilihInput = inputMain();
@@ -220,7 +223,11 @@ public class Main {
                         a = scan.nextDouble();
                         System.out.print("b: ");
                         b = scan.nextDouble();
-                    } else{}
+                    } else{
+                        String path = IO.inputFileName();
+                        M = IO.fileInputMatrix(path);
+
+                    }
 
                 }
 

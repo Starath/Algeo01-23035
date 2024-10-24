@@ -12,7 +12,9 @@ public class IO {
     /*                 MATRIX I/O                 */
     /* ===========================================*/
 
-    /*=================== INPUT ==================*/
+    /*============================================ */
+    /*=================== INPUT  ==================*/
+    /*============================================ */
     public static Matrix keyboardInputMatrix(int row, int col){
         scan = new Scanner(System.in);
         if (row == -1 || col == -1){
@@ -34,11 +36,14 @@ public class IO {
         return M;
     }
 
-    public static Matrix fileInputMatrix(){
+    public static String inputFileName(){
         scan = new Scanner(System.in);
         System.out.println("Masukkan nama file (contoh: a.txt): ");
         String filename = scan.nextLine();
         String path = "..\\test\\" + filename;
+        return path;
+    }
+    public static Matrix fileInputMatrix(String path){
         System.out.println("Opening " + path + "...");
 
         try {
@@ -77,7 +82,25 @@ public class IO {
         }
     }
 
+    //Bicubic
+    public static double[] fileInputPoints(String path,int line) {
+        double[] points = new double[10];
+        try {
+            File file = new File(path);
+            Scanner scanFile = new Scanner(file);
+            for(int i = 0; i < line; i++){
+                scanFile.nextLine();
+            }
+
+            scanFile.close();
+            return points;
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found...");
+        }
+    }    
+    /*============================================ */
     /*=================== OUTPUT ==================*/
+    /*============================================ */
 
     public static void terminalOutputMatrix(Matrix M) {
         for (int i = 0; i < M.rowCount(); i++){
@@ -90,10 +113,7 @@ public class IO {
     }
 
     public static String fileOutputMaster(){
-        scan = new Scanner(System.in);
-        System.out.print("Masukkan nama file (contoh: a.txt): ");
-        String filename = scan.nextLine();
-        String path = "..\\test\\" + filename;
+        String path = inputFileName();
         File file = new File(path);
         try {
             if(!file.exists()) {
@@ -106,22 +126,6 @@ public class IO {
         return path;
     }
 
-    public static void printRow(Matrix M, int idx) {
-        System.out.println(Arrays.toString(M.getRow(idx)));
-     }
-    public void printCol(Matrix M, int idx){
-        double col[] = M.getCol(idx);
-        int i;
-        for (i = 0; i < M.rowCount();i++) {
-            System.out.print("[");
-            System.out.print(col[i]);
-            System.out.print("]\n");
-        }
-    }
-
-    // public static void fileOutMatrix(Matrix M){
-
-    // }
     public static void fileOutputSPL(SPL R){
         boolean success;
         String path = fileOutputMaster();
@@ -144,9 +148,41 @@ public class IO {
         if(success){System.out.println("Saved to file successfully! ");}
     }
 
-    /* ===========================================*/
-    /*                 OTHER I/O                  */
-    /* ===========================================*/
+    public static void fileOutputDet(double det){
+        boolean success;
+        String path = fileOutputMaster();
+        PrintStream consoleOut = System.out;
+        try {
+            PrintStream fileOutput = new PrintStream(new File(path));
+            System.setOut(fileOutput);
+            System.out.println("Determinan Matriks: " + det);
+            fileOutput.close();
+            success = true;
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found or could not be created.");
+            success = false;
+        }
+        System.setOut(consoleOut);
+        if(success){System.out.println("Saved to file successfully! ");}
+    }
+
+    public static void fileOutputInvers(Matrix invers){
+        boolean success;
+        String path = fileOutputMaster();
+        PrintStream consoleOut = System.out;
+        try {
+            PrintStream fileOutput = new PrintStream(new File(path));
+            System.setOut(fileOutput);
+            terminalOutputMatrix(invers);
+            fileOutput.close();
+            success = true;
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found or could not be created.");
+            success = false;
+        }
+        System.setOut(consoleOut);
+        if(success){System.out.println("Saved to file successfully! ");}
+    }
 
     /* ===========================================*/
     /*                 I/O MAIN                   */
