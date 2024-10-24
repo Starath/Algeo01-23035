@@ -63,7 +63,6 @@ public class PolyInterpolation {
             mPoints.setElmt(i, 0, x);  // Set x
             mPoints.setElmt(i, 1, y);  // Set y
         }
-        scan.close();
         return mPoints;
     }
     
@@ -127,13 +126,12 @@ public class PolyInterpolation {
     }
 
     public static void FileInputPoints(Matrix mPoints, double Absis)  {
-        scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
         int index = 0;
         System.out.println("Masukkan nama file (contoh: a.txt)");
         String filename = scan.nextLine();
         String path = "..\\test\\" + filename;
         System.out.println("Opening " + path + "...");
-        
     }
 
     public static void main(String[] args) 
@@ -143,6 +141,7 @@ public class PolyInterpolation {
         Matrix mHasil = PolyInterpolation.PointstoMatrix(mPoints);
         SPL solusi = PolyInterpolation.InterpolationFunction(mHasil);
         PolyInterpolation.OutputInterpolation(solusi);
+        System.out.println("");
         PolyInterpolation.InterpolationFX(solusi);
         // Scanner scan = new Scanner(System.in);
         // System.out.println("");

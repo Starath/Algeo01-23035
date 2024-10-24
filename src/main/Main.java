@@ -195,9 +195,20 @@ public class Main {
                         System.out.println("Persamaan polinomial yang diperoleh: ");
                         PolyInterpolation.OutputInterpolation(solutions);
                         System.out.println("");
-                        // border();
-                        // PolyInterpolation.InterpolationFX(solutions);
-                        // border();
+                        border();
+                        PolyInterpolation.InterpolationFX(solutions);
+                        border();
+                        while(true) {
+                            System.out.println("Lanjut memasukkan nilai absis? (y/n): ");
+                            lagi = scan.nextInt();
+                            if(lagi == 0) break;
+                            else if(lagi == 1) {
+                                System.out.println("");
+                                border();
+                                PolyInterpolation.InterpolationFX(solutions);
+                                border();
+                            }
+                        }
                     } else if(pilihInput == 2) {
                         
                     }
