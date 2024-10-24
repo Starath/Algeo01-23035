@@ -172,6 +172,33 @@ public class Main {
                 /*                   POLINOM                     */
                 else if (pilihan == 4) {
                     tipe = "polinom";
+                    Matrix mPoints, mHasil;
+                    double Absis;
+                    int lagi;
+                    clearScreen();
+                    border();
+                    System.out.println("INTERPOLASI POLINOMIAL");
+                    System.out.println("(ketik 0 untuk kembali)");
+                    int pilihInput = inputMain();
+                    if(pilihInput == 1)
+                    {
+                        mPoints = PolyInterpolation.KeyboardInputPoints();
+                        border();
+                        mHasil = PolyInterpolation.PointstoMatrix(mPoints);
+                        clearScreen();
+                        System.out.println("Matrix untuk interpolasi polinomial  : ");
+                        IO.terminalOutputMatrix(mHasil);
+                        SPL solutions = PolyInterpolation.InterpolationFunction(mHasil);
+                        border();
+                        System.out.println("Persamaan polinomial yang diperoleh: ");
+                        PolyInterpolation.OutputInterpolation(solutions);
+                        System.out.println("");
+                        // border();
+                        // PolyInterpolation.InterpolationFX(solutions);
+                        // border();
+                    } else if(pilihInput == 2) {
+                        
+                    }
                 }
 
                 /*************************************************/
