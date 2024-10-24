@@ -200,7 +200,7 @@ public class Regression {
                     break;
                 } else if(pilihan == 2){
                     String path = IO.inputFileName();
-                    M = IO.fileInputMatrix(path);
+                    M = IO.fileInputMatrix(path,row,1);
                     break;
                 } else {
                     System.out.println("Input tidak valid!\n");
@@ -223,7 +223,7 @@ public class Regression {
                     break;
                 } else if(pilihan == 2){
                     String path = IO.inputFileName();
-                    M = IO.fileInputMatrix(path);
+                    M = IO.fileInputMatrix(path,row,1);
                     break;
                 } else {
                     System.out.println("Input tidak valid!\n");

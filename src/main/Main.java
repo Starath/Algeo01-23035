@@ -234,7 +234,6 @@ public class Main {
                 else if (pilihan == 5) {
                     Matrix M;
                     double a,b;
-                    double interpolated = Bicubic.bicubicInterpolation(M, a, b);
                     System.out.println("BICUBIC INTERPOLATION");
                     System.out.println("1. Interpolasi");
                     System.out.println("0. Kembali");
@@ -249,6 +248,7 @@ public class Main {
                             a = scan.nextDouble();
                             System.out.print("b: ");
                             b = scan.nextDouble();
+                            
                         } else{
                             String path = IO.inputFileName();
                             M = IO.fileInputMatrix(path, 4, 4);
@@ -264,6 +264,7 @@ public class Main {
                         continue;
                     }
                              
+                    double interpolated = Bicubic.bicubicInterpolation(M, a, b);
                     int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         border();
