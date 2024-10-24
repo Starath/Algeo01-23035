@@ -49,6 +49,8 @@ public class Main {
                 /*************************************************/
                 /*                    SPL                        */
                 if (pilihan == 1) {
+                    SPL resultSPL;
+                    Matrix M = null;
                     tipe = "spl";
                     clearScreen();
                     border();
@@ -61,8 +63,10 @@ public class Main {
                     System.out.print("Pilih metode: ");
                     pilihanMet = scan.nextInt();
 
-                    Matrix M = inputMain(tipe);
-                    SPL resultSPL;
+                    if(pilihanMet == 1 || pilihanMet == 2 || pilihanMet == 3 || pilihanMet == 4 ){
+                        M = inputMatrix(tipe);
+                    }
+                    
                     if (pilihanMet == 1) resultSPL = SPL.gaussElim(M);
                     else if(pilihanMet == 2) resultSPL = SPL.gaussJordanElim(M);
                     else if(pilihanMet== 3) resultSPL = SPL.inverseSPL(M);
@@ -72,8 +76,9 @@ public class Main {
                         System.out.println("Input tidak valid!");
                         confirmExit();
                         continue;}
-
-                    int pilihOutput = outputMain(M, tipe);
+                    int pilihOutput = outputMain();
+                    border();
+                    System.out.println("");
                     if(pilihOutput == 1){
                         if(resultSPL.isNoSolution()){
                             System.out.println("SPL tidak memiliki solusi / solusi tidak ditemukan");
@@ -81,6 +86,8 @@ public class Main {
                             resultSPL.displaySolutions();
                         }
                     }
+                    System.out.println("");
+                    border();
                     confirmExit();
                     }
 
@@ -91,7 +98,7 @@ public class Main {
                 else if (pilihan == 2) {
                     tipe = "det";
                     double det;
-                    Matrix M;
+                    Matrix M = null;
                     clearScreen();
                     border();
                     System.out.println("DETERMINAN MATRIKS");
@@ -101,12 +108,13 @@ public class Main {
                     System.out.print("Pilih metode: ");
                     pilihanMet = scan.nextInt();
 
+                    if(pilihanMet == 1 || pilihanMet == 2 ){
+                        M = inputMatrix(tipe);
+                    }
                     if (pilihanMet == 1) {
-                        M = inputMain(tipe);
                         det = MatrixAdv.detByGauss(M);}
 
                     else if(pilihanMet == 2) {
-                        M = inputMain(tipe);
                         det = MatrixAdv.detByCofactor(M);}
 
                     else if (pilihanMet == 3) {break;}
@@ -115,7 +123,7 @@ public class Main {
                         confirmExit();
                         continue;
                     }
-                    int pilihOutput = outputMain(M, tipe);
+                    int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         border();
                         System.out.println("Determinan Matriks: " + det);
@@ -128,7 +136,7 @@ public class Main {
                 /*                     INVERS                    */
                 else if (pilihan == 3) {
                     tipe = "invers";
-                    Matrix M, invers;
+                    Matrix M = null, invers;
                     clearScreen();
                     border();
                     System.out.println("MATRIKS BALIKAN");
@@ -138,12 +146,13 @@ public class Main {
                     System.out.print("Pilih metode: ");
                     pilihanMet = scan.nextInt();
 
+                    if(pilihanMet == 1 || pilihanMet == 2){
+                        M = inputMatrix(tipe);
+                    }
                     if(pilihanMet == 1){
-                        M = inputMain(tipe);
                         invers = MatrixAdv.inverseByOBE(M);
                     }
                     else if(pilihanMet == 2){
-                        M = inputMain(tipe);
                         invers = MatrixAdv.inverseByAdjoin(M);
                     }
                     else if(pilihanMet == 3)break;
@@ -153,7 +162,7 @@ public class Main {
                         continue;
                     }
 
-                    int pilihOutput = outputMain(M, tipe);
+                    int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         IO.terminalOutputMatrix(invers);
                     }
@@ -169,9 +178,14 @@ public class Main {
                 /*                    BICUBIC                    */
                 else if (pilihan == 5) {
                     tipe = "bicubic";
-                    Matrix M = inputMain(tipe);
-                    double a = scan.nextDouble();
-                    double b = scan.nextDouble();
+                    Matrix M;
+                    double a,b;
+                    int pilihInput = inputMain();
+                    if(pilihInput == 1){
+                        M = IO.keyboardInputMatrix(4, 4);
+                        a = scan.nextDouble();
+                        b = scan.nextDouble();
+                    } else{}
 
                 }
 
@@ -211,52 +225,49 @@ public class Main {
     }
 
     // Pilihan Input Matrix
-    public static Matrix inputMain(String tipe){
+    public static int inputMain(){
         Matrix M;
         int pilihan;
-        int row = 0,col = 0;
         Scanner scan = new Scanner(System.in);
         System.out.println("");
         while(true) {
             clearScreen();
             border();
-            System.out.println("Menu Input Matriks");
+            System.out.println("Menu Input");
             border();
             System.out.println("1. Input dari keyboard");
             System.out.println("2. Input dari file");
             System.out.print("Pilih metode: ");
             pilihan = scan.nextInt();
 
-            if (pilihan == 1){
-                if(tipe.equals("bicubic")){
-                    row = 4;
-                    col = 4;
-                }
-                else{
-                    System.out.print("Jumlah Baris: ");
-                    row = scan.nextInt();
-                    System.out.print("Jumlah Kolom: ");
-                    col = scan.nextInt(); 
-                }
-                M = IO.keyboardInputMatrix(row,col);
-                break;
-            } 
-            
-            else if(pilihan == 2){
-                M = IO.fileInputMatrix();
-                break;
-            } else {
-                System.out.println("Input tidak valid!\n");
+            if(pilihan != 1 && pilihan != 2){
+                System.out.println("Input tidak Valid!");
                 confirmExit();
                 continue;
             }
+            return pilihan;
+        }
+    }
 
+    public static Matrix inputMatrix(String tipe){
+        Matrix M;
+        int row,col;
+        int pilihInput = inputMain();
+        System.out.print("Jumlah baris: ");
+        row = scan.nextInt();
+        System.out.print("Jumlah kolom: ");
+        col = scan.nextInt();
+    
+        if(pilihInput == 1){
+            System.out.println("Masukkan Elemen-elemen Matriks: ");
+            M = IO.keyboardInputMatrix(row, col);
+        } else {
+            M = IO.fileInputMatrix();
         }
         return M;
-        
     }
     // Pilihan Output Matrix
-    public static int outputMain(Matrix M, String tipe){
+    public static int outputMain(){
         int pilihan;
         Scanner scan = new Scanner(System.in);
         System.out.println("");
@@ -269,7 +280,8 @@ public class Main {
             System.out.println("2. Output ke file");
             System.out.print("Pilih metode: ");
             pilihan = scan.nextInt();
-            if(pilihan != 1 || pilihan != 2){
+            System.out.println("");
+            if(pilihan != 1 && pilihan != 2){
                 System.out.println("Input tidak Valid!");
                 confirmExit();
                 continue;
