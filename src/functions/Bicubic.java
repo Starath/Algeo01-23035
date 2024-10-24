@@ -1,12 +1,34 @@
 package functions;
 
+import java.util.Scanner;
+import main.IO;
 import matrix.Matrix;
 import matrix.MatrixAdv;
 
 public class Bicubic {
     // PERSAMAAN y = Xa
     /* Dimana y adalah matrix nilai fungsi, X adalah matrix basis, dan a adalah matrix koefisien */
-    public static void bicubicInterpolation(Matrix M, double a, double b){
+    public static double bicubicInterpolation(Matrix M, double a, double b){
+        if (a == 0 && b == 0) return M.getElmt(1, 1);
+        else if (a == 0 && b == 1) return M.getElmt(1, 2);
+        else if (a == 1 && b == 1) return M.getElmt(2, 2);
+        else if (a == 1 && b == 0) return M.getElmt(2, 1);
+
+
+        Matrix Mnew = reshapeTo16x1(M);
+        Matrix X = getBasisMatrix();
+        Matrix A = getAlphaMatrix(X, Mnew);
+
+        double result = 0.0;
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                result += A.getElmt(index, 0) * Math.pow(a, i) * Math.pow(b, j);
+                index++;
+            }
+        }
+
+        return result;
 
     }
     public static Matrix getBasisMatrix(){
@@ -57,6 +79,18 @@ public class Bicubic {
             }
         }
         return y;
+    }
+
+    public static void main(String[] args) {
+        Matrix M = IO.keyboardInputMatrix(4, 4);
+        Scanner scan = new Scanner(System.in);
+        double a = scan.nextDouble();
+        double b = scan.nextDouble();
+        System.out.println(bicubicInterpolation(M, a, b));
+        Matrix X = getBasisMatrix();
+        IO.terminalOutputMatrix(X);
+        IO.terminalOutputMatrix(MatrixAdv.inverseByAdjoin(X));
+        System.out.println(MatrixAdv.detByGauss(X));
     }
 }
 

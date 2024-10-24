@@ -42,7 +42,12 @@ public class SPL {
     public void displaySolutions(){
         for(int i = 0; i < variables; i++){
             if(oneSolution){System.out.print("X" + (i+1) + " = " + solutions[i] + " ");}
-            else if(infSolution){System.out.print("X" + (i+1) + " = " + paramSolutions[i] + " ");}
+            else if(infSolution){
+                System.out.print("X" + (i+1) + " = " + paramSolutions[i] + " ");
+                if (paramSolutions[i].isEmpty()){
+                    System.out.print("0");
+                }
+            }
             System.out.println("");
         }
     }
@@ -70,13 +75,13 @@ public class SPL {
 
     public static SPL gaussElim(Matrix M) {
      Matrix T = MatrixAdv.getUpperTriangular(M);
+     Matrix RREF = MatrixAdv.getRREMatrix(M);
      int row = M.rowCount(), col = M.colCount();
      SPL result = new SPL(col -1);
 
-     if(T.colCutter(col-1).hasZeroRow() || T.colCutter(col-1).hasFreeVariables()){
-         if(T.hasZeroRow() || T.colCutter(col-1).hasFreeVariables()) {
-            T = MatrixAdv.getRREMatrix(M);
-            result = parametricWriter(T);
+     if(RREF.colCutter(col-1).hasZeroRow() || RREF.colCutter(col-1).hasFreeVariables()){
+         if(RREF.hasZeroRow() || RREF.colCutter(col-1).hasFreeVariables()) {
+            result = parametricWriter(RREF);
             result.setInfSolution();}
          else {
             result.setNoSolution();}
