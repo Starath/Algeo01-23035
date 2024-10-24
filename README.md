@@ -34,7 +34,7 @@ Dari *root folder*, ketik `cd bin` untuk pindah ke folder bin. Kemudian ketik <b
 
 ## Struktur *Tree* Program
 
-'
+```
 │   README.md
 │
 ├───.vscode
@@ -89,4 +89,4 @@ Dari *root folder*, ketik `cd bin` untuk pindah ke folder bin. Kemudian ketik <b
         studikasus7b.txt
         studikasus7c.txt
         studikasus7d.txt
-'
+```
