@@ -213,8 +213,12 @@ public class Main {
                     double a,b;
                     int pilihInput = inputMain();
                     if(pilihInput == 1){
+                        System.out.println("Masukkan elemen-elemen matriks:");
                         M = IO.keyboardInputMatrix(4, 4);
+                        System.out.println("Masukkan titik-titik yang akan diinterpolasi [f(a,b)]");
+                        System.out.print("a: ");
                         a = scan.nextDouble();
+                        System.out.print("b: ");
                         b = scan.nextDouble();
                     } else{}
 

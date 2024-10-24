@@ -1,20 +1,13 @@
 package functions;
 
-import java.util.Scanner;
-import main.IO;
-import matrix.Matrix;
-import matrix.MatrixAdv;
+import java.util.*;
+import main.*;
+import matrix.*;
 
 public class Bicubic {
     // PERSAMAAN y = Xa
     /* Dimana y adalah matrix nilai fungsi, X adalah matrix basis, dan a adalah matrix koefisien */
     public static double bicubicInterpolation(Matrix M, double a, double b){
-        if (a == 0 && b == 0) return M.getElmt(1, 1);
-        else if (a == 0 && b == 1) return M.getElmt(1, 2);
-        else if (a == 1 && b == 1) return M.getElmt(2, 2);
-        else if (a == 1 && b == 0) return M.getElmt(2, 1);
-
-
         Matrix Mnew = reshapeTo16x1(M);
         Matrix X = getBasisMatrix();
         Matrix A = getAlphaMatrix(X, Mnew);
@@ -63,7 +56,7 @@ public class Bicubic {
     }
 
     public static Matrix getAlphaMatrix(Matrix X, Matrix y){
-        Matrix inverseX = MatrixAdv.inverseByAdjoin(X);
+        Matrix inverseX = MatrixAdv.inverseByOBE(X);
         Matrix alpha = MatrixAdv.multiplyMatrix(inverseX, y);
         return alpha;
     }
@@ -87,9 +80,6 @@ public class Bicubic {
         double a = scan.nextDouble();
         double b = scan.nextDouble();
         System.out.println(bicubicInterpolation(M, a, b));
-        Matrix X = getBasisMatrix();
-        IO.terminalOutputMatrix(X);
-        System.out.println(MatrixAdv.detByGauss(X));
     }
 }
 

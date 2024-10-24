@@ -49,6 +49,7 @@ public class MatrixAdv {
         double det = 1;
         for(col = 0; col < matrix.colCount(); col++){                
             row = col;
+            IO.terminalOutputMatrix(M);
             while((row < matrix.rowCount()) && (matrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
                 row++;
             }
@@ -81,43 +82,58 @@ public class MatrixAdv {
     /* ======================  INVERSE  ===================================== */
     // 1. MENGGUNAKAN ADJOIN
     public static Matrix inverseByAdjoin(Matrix M){
-        double det = detByGauss(M);
+        double det = detByCofactor(M);
         Matrix invers = getAdjoinMatrix(M);
         invers.constantMultiply(1/det);
         return invers;
     }    
     
     // 2. MENGGUNAKAN OBE
-    public static Matrix inverseByOBE(Matrix matrix){
-        Matrix inverseMatrix = new Matrix(matrix.rowCount(),matrix.colCount());
+    public static Matrix inverseByOBE(Matrix matrix) {
+        Matrix inverseMatrix = new Matrix(matrix.rowCount(), matrix.colCount());
         Matrix identityMatrix = matrix.copyMatrix();
-        identityMatrix.setIdentityMatrix();
+        identityMatrix.setIdentityMatrix();  // Create an identity matrix of the same size
         int i, row, col;
         double scalar;
+        
         for (col = 0; col < matrix.colCount(); col++) {
             row = col;
-            while((row < matrix.rowCount()) && (matrix.getElmt(row, col) == 0)){ /*asumsikan matriks persegi */
+            // Find the first non-zero element in the current column
+            while (row < matrix.rowCount() && matrix.getElmt(row, col) == 0) { 
                 row++;
             }
-
-            if (row < matrix.rowCount()){ /*Mencari indeks tidak nol pertama */
+            
+            if (row == matrix.rowCount()) {
+                // If all elements in the column are zero, the matrix is singular (non-invertible)
+                return null; // No inverse exists
+            }
+            
+            // Swap rows in both the matrix and the identity matrix
+            if (row != col) {
                 matrix.swapRows(row, col);
-                identityMatrix.swapCols(row, col);
+                identityMatrix.swapRows(row, col);
             }
-            else{
-                return inverseMatrix;
+    
+            // Normalize the pivot row
+            double pivot = matrix.getElmt(col, col);
+            for (i = 0; i < matrix.colCount(); i++) {
+                matrix.setElmt(col, i, matrix.getElmt(col, i) / pivot);
+                identityMatrix.setElmt(col, i, identityMatrix.getElmt(col, i) / pivot);
             }
-            for(i = 0; i < matrix.rowCount(); i++){ /*membuat angka di bawah pivot menjadi nol */
-                if (i != col){
-                    scalar = (matrix.getElmt(i, col) / matrix.getElmt(col, col)) * (-1);
-                    matrix.addRows(i, col, scalar);
-                    identityMatrix.addRows(i, col, scalar);
-
+    
+            // Eliminate the elements in the other rows of the current column
+            for (i = 0; i < matrix.rowCount(); i++) {
+                if (i != col) {
+                    scalar = -matrix.getElmt(i, col);
+                    matrix.addRows(i, col, scalar);  // Eliminate in matrix
+                    identityMatrix.addRows(i, col, scalar);  // Do the same in the identity matrix
                 }
             }
-        }            
-        return matrix;
+        }
+    
+        return identityMatrix;  // Return the inverse matrix
     }
+    
     public static void main(String[] args) {
         Matrix M = new Matrix(3,3);
         M = IO.keyboardInputMatrix(M.rowCount(), M.colCount());
