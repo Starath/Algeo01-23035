@@ -1,6 +1,9 @@
 package functions;
 
 import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import main.IO;
 import matrix.*;
 
@@ -93,7 +96,7 @@ public class PolyInterpolation {
         System.out.printf("P(X) = ");
         for (int index = lenSolusi - 1; index >= 0; index--) {
             if (index == 0) {
-                System.out.print("(" + solusi.solutions[index] + ")");
+                System.out.print("(" + solusi.solutions[index] + ")\n");
                 break;
             }
             if (index == 1) {
@@ -104,9 +107,7 @@ public class PolyInterpolation {
         }
     }
 
-    public static void InterpolationFX(SPL solusi) {
-        Scanner scan = new Scanner(System.in);
-        double Ordinat = 0;
+    public static double setAbsis() {
         System.out.printf("Masukkan absis titik : ");
         double absis;
         // Validasi input untuk koordinat x
@@ -119,19 +120,39 @@ public class PolyInterpolation {
                 scan.next(); // Membersihkan input yang salah
             }
         }
+        return absis;
+    }
+
+    public static double InterpolationFX(SPL solusi, double absis) {
+        double Ordinat = 0;
         for (int index = 0; index < solusi.variables; index++) {
             Ordinat += solusi.solutions[index] * Math.pow(absis,index);
         }
         System.out.println("P(" + absis + ") = " + Ordinat);
+        return Ordinat;
     }
 
-    public static void FileInputPoints(Matrix mPoints, double Absis)  {
-        Scanner scan = new Scanner(System.in);
-        int index = 0;
-        System.out.println("Masukkan nama file (contoh: a.txt)");
-        String filename = scan.nextLine();
-        String path = "..\\test\\" + filename;
-        System.out.println("Opening " + path + "...");
+    public static void fileoutputinterpolations(SPL solutions, double Absis, double Ordinat)  {
+        String path = IO.fileOutputMaster();
+        PrintStream ConsoleOut = System.out;
+        boolean success;
+        try {
+            PrintStream fileOutput = new PrintStream(new File(path));
+            System.setOut(fileOutput);
+            if(solutions.isNoSolution()){
+                System.out.println("Tidak terdapat persamaan polinomial");
+            } else {
+                PolyInterpolation.OutputInterpolation(solutions);
+                System.out.println("P(" + Absis + ") = " + Ordinat + "\n");
+            }
+            fileOutput.close();
+            success = true;
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found or could not be created.");
+            success = false;
+        }
+        System.setOut(ConsoleOut);
+        if(success){System.out.println("Saved to file successfully! ");} 
     }
 
     public static void main(String[] args) 
@@ -142,7 +163,6 @@ public class PolyInterpolation {
         SPL solusi = PolyInterpolation.InterpolationFunction(mHasil);
         PolyInterpolation.OutputInterpolation(solusi);
         System.out.println("");
-        PolyInterpolation.InterpolationFX(solusi);
         // Scanner scan = new Scanner(System.in);
         // System.out.println("");
         // while(true) 

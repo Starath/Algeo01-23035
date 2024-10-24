@@ -176,7 +176,6 @@ public class Main {
                     tipe = "polinom";
                     Matrix mPoints, mHasil;
                     double Absis;
-                    int lagi;
                     clearScreen();
                     border();
                     System.out.println("INTERPOLASI POLINOMIAL");
@@ -196,19 +195,11 @@ public class Main {
                         PolyInterpolation.OutputInterpolation(solutions);
                         System.out.println("");
                         border();
-                        PolyInterpolation.InterpolationFX(solutions);
+                        System.out.printf("Masukkan absis titik : ");
+                        Absis = PolyInterpolation.setAbsis();
+                        // Validasi input untuk koordinat x
+                        double Ordinat = PolyInterpolation.InterpolationFX(solutions, Absis);
                         border();
-                        while(true) {
-                            System.out.println("Lanjut memasukkan nilai absis? (y/n): ");
-                            lagi = scan.nextInt();
-                            if(lagi == 0) break;
-                            else if(lagi == 1) {
-                                System.out.println("");
-                                border();
-                                PolyInterpolation.InterpolationFX(solutions);
-                                border();
-                            }
-                        }
                     } else if(pilihInput == 2) {
                         
                     }
