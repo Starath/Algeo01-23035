@@ -26,3 +26,5 @@ replay_pid*
 try*
 Try*
 .vscode/
+*.txt
+!studi*.txt

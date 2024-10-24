@@ -85,11 +85,11 @@ public class Main {
                         } else {
                             resultSPL.displaySolutions();
                         }
+                        System.out.println("");
+                        border();
                     } else {
                         IO.fileOutputSPL(resultSPL);
                     }
-                    System.out.println("");
-                    border();
                     confirmExit();
                     }
 
@@ -128,12 +128,14 @@ public class Main {
                     int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         border();
+                        System.out.println("");
                         System.out.println("Determinan Matriks: " + det);
+                        System.out.println("");
                         border();
-                        confirmExit();
                     } else {
-                        IO.fileOutputDet(det);
+                        IO.fileOutputDetorBicubic(det, "det");
                     }
+                    confirmExit();
                 }
 
                 /*************************************************/
@@ -168,10 +170,15 @@ public class Main {
 
                     int pilihOutput = outputMain();
                     if(pilihOutput == 1){
+                        border();
+                        System.out.println("");
                         IO.terminalOutputMatrix(invers);
+                        System.out.println("");
+                        border();
                     } else {
                         IO.fileOutputInvers(invers);
                     }
+                    confirmExit();
                 }
 
                 /*************************************************/
@@ -226,9 +233,25 @@ public class Main {
                     } else{
                         String path = IO.inputFileName();
                         M = IO.fileInputMatrix(path);
-
+                        double[] points = IO.fileInputPoints(path, M.rowCount());
+                        a = points[0];
+                        b = points[1];
                     }
+                    
+                    double interpolated = Bicubic.bicubicInterpolation(M, a, b);
 
+                    int pilihOutput = outputMain();
+                    if(pilihOutput == 1){
+                        border();
+                        System.out.println("");
+                        System.out.println("f(" + a + "," + b + ") = " + interpolated);
+                        System.out.println("");
+                        border();
+                    }
+                    else{
+                        IO.fileOutputDetorBicubic(interpolated, "bicubic");
+                    }
+                    confirmExit();
                 }
 
                 /*************************************************/
@@ -364,7 +387,8 @@ public class Main {
             System.out.println("Masukkan Elemen-elemen Matriks: ");
             M = IO.keyboardInputMatrix(row, col);
         } else {
-            M = IO.fileInputMatrix();
+            String path = IO.inputFileName();
+            M = IO.fileInputMatrix(path);
         }
         return M;
     }

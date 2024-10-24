@@ -91,11 +91,16 @@ public class IO {
             for(int i = 0; i < line; i++){
                 scanFile.nextLine();
             }
-
+            int index = 0;
+            while(scanFile.hasNextDouble()){
+                points[index] = scanFile.nextDouble();
+                index++;
+            }
             scanFile.close();
             return points;
         } catch (FileNotFoundException e) {
             System.out.println("File not found...");
+            return points;
         }
     }    
     /*============================================ */
@@ -148,14 +153,19 @@ public class IO {
         if(success){System.out.println("Saved to file successfully! ");}
     }
 
-    public static void fileOutputDet(double det){
+    public static void fileOutputDetorBicubic(double val, String tipe){
         boolean success;
         String path = fileOutputMaster();
         PrintStream consoleOut = System.out;
         try {
             PrintStream fileOutput = new PrintStream(new File(path));
             System.setOut(fileOutput);
-            System.out.println("Determinan Matriks: " + det);
+            if(tipe.equals("det")){
+                System.out.println("Determinan Matriks: " + val);
+            } 
+            else if(tipe.equals("bicubic")){
+                System.out.println("f(" + "a" + "," + "b" + ") = " + val);
+            }
             fileOutput.close();
             success = true;
         } catch (FileNotFoundException e) {
@@ -183,6 +193,7 @@ public class IO {
         System.setOut(consoleOut);
         if(success){System.out.println("Saved to file successfully! ");}
     }
+
 
     /* ===========================================*/
     /*                 I/O MAIN                   */
