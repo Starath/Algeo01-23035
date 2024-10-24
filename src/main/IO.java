@@ -1,5 +1,6 @@
 package main;
 
+import functions.*;
 import java.io.*;
 import java.util.*;
 import matrix.*;
@@ -35,7 +36,7 @@ public class IO {
 
     public static Matrix fileInputMatrix(){
         scan = new Scanner(System.in);
-        System.out.println("Masukkan nama file (contoh: a.txt)");
+        System.out.println("Masukkan nama file (contoh: a.txt): ");
         String filename = scan.nextLine();
         String path = "..\\test\\" + filename;
         System.out.println("Opening " + path + "...");
@@ -88,9 +89,23 @@ public class IO {
         System.out.println("");
     }
 
-    public static void fileOutputMatrix(){
-
+    public static String fileOutputMaster(){
+        scan = new Scanner(System.in);
+        System.out.print("Masukkan nama file (contoh: a.txt): ");
+        String filename = scan.nextLine();
+        String path = "..\\test\\" + filename;
+        File file = new File(path);
+        try {
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            System.err.println("Error creating file: " + e.getMessage());
+            // You can also return a default value or throw a custom exception
+        }
+        return path;
     }
+
     public static void printRow(Matrix M, int idx) {
         System.out.println(Arrays.toString(M.getRow(idx)));
      }
@@ -107,10 +122,26 @@ public class IO {
     // public static void fileOutMatrix(Matrix M){
 
     // }
-    public static void main(String[] args) {
-        Matrix M;
-        M = fileInputMatrix();
-        terminalOutputMatrix(M);
+    public static void fileOutputSPL(SPL R){
+        boolean success;
+        String path = fileOutputMaster();
+        PrintStream consoleOut = System.out;
+        try {
+            PrintStream fileOutput = new PrintStream(new File(path));
+            System.setOut(fileOutput);
+            if(R.isNoSolution()){
+                System.out.println("SPL tidak memiliki solusi / solusi tidak ditemukan");
+            } else {
+                R.displaySolutions();
+            }
+            fileOutput.close();
+            success = true;
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found or could not be created.");
+            success = false;
+        }
+        System.setOut(consoleOut);
+        if(success){System.out.println("Saved to file successfully! ");}
     }
 
     /* ===========================================*/

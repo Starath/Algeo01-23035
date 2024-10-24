@@ -85,6 +85,8 @@ public class Main {
                         } else {
                             resultSPL.displaySolutions();
                         }
+                    } else {
+                        IO.fileOutputSPL(resultSPL);
                     }
                     System.out.println("");
                     border();
