@@ -224,6 +224,7 @@ public class Main {
                     } else {
                         System.out.println("Input tidak valid!");
                         confirmExit();
+                        continue;
                     }
                     confirmExit();
                 }
@@ -233,28 +234,36 @@ public class Main {
                 else if (pilihan == 5) {
                     Matrix M;
                     double a,b;
-                    int pilihInput = inputMain();
-                    if(pilihInput == 1){
-                        System.out.println("Masukkan elemen-elemen matriks:");
-                        M = IO.keyboardInputMatrix(4, 4);
-                        System.out.println("Masukkan titik-titik yang akan diinterpolasi [f(a,b)]");
-                        System.out.print("a: ");
-                        a = scan.nextDouble();
-                        System.out.print("b: ");
-                        b = scan.nextDouble();
-                    } else{
-                        String path = IO.inputFileName();
-                        M = IO.fileInputMatrix(path, 4, 4);
-                        double[] points = IO.fileInputPoints(path, M.rowCount());
-                        a = points[0];
-                        b = points[1];
-                    }
-                    
                     double interpolated = Bicubic.bicubicInterpolation(M, a, b);
                     System.out.println("BICUBIC INTERPOLATION");
                     System.out.println("1. Interpolasi");
                     System.out.println("0. Kembali");
-                    pilihanMet = sca
+                    pilihanMet = scan.nextInt();
+                    if(pilihanMet == 1){
+                        int pilihInput = inputMain();
+                        if(pilihInput == 1){
+                            System.out.println("Masukkan elemen-elemen matriks:");
+                            M = IO.keyboardInputMatrix(4, 4);
+                            System.out.println("Masukkan titik-titik yang akan diinterpolasi [f(a,b)]");
+                            System.out.print("a: ");
+                            a = scan.nextDouble();
+                            System.out.print("b: ");
+                            b = scan.nextDouble();
+                        } else{
+                            String path = IO.inputFileName();
+                            M = IO.fileInputMatrix(path, 4, 4);
+                            double[] points = IO.fileInputPoints(path, M.rowCount());
+                            a = points[0];
+                            b = points[1];
+                        }
+                    } else if (pilihanMet == 0){
+                        break;
+                    } else {
+                        System.out.println("Input tidak valid!");
+                        confirmExit();
+                        continue;
+                    }
+                             
                     int pilihOutput = outputMain();
                     if(pilihOutput == 1){
                         border();
